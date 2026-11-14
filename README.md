@@ -1,4 +1,4 @@
-# 🔴 Mars Explorer — Interplanetary Survival Guide
+# Mars Explorer — Interplanetary Survival Guide
 
 > An interactive guide for astronauts and explorers who need to **understand Martian terrain, identify safe regions, and plan exploration routes**.
 
@@ -10,18 +10,7 @@
 ## 📖 Table of Contents
 
 - [About the Project](#-about-the-project)
-- [The Problem](#-the-problem)
-- [Our Solution](#-our-solution)
-- [Features](#-features)
-- [NASA Data Used](#-nasa-data-used)
-- [How the Safety Analysis Works](#-how-the-safety-analysis-works)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Installation and Usage](#-installation-and-usage)
-- [Repository Structure](#-repository-structure)
-- [Roadmap](#-roadmap)
 - [Team](#-team)
-- [Credits and License](#-credits-and-license)
 
 ---
 
