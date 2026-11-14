@@ -24,6 +24,6 @@ Mars is a hostile environment: rugged terrain, an extremely thin atmosphere, dus
 
 | Name | Git Hub |
 | --- | --- |
-| _Thajla Lawane_ | _ _ |
-| _Felipe Baviera_ | _ _ |
-| _Daniel Lustosa_ | _ _ |
+| _Thajla Lawane_ | _ @yukitzz_ |
+| _Felipe Baviera_ | _ @ _ |
+| _Daniel Lustosa_ | _ @_ |
