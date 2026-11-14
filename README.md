@@ -1,8 +1,5 @@
-# 🔴 Marte 3D — Explorando o Planeta Vermelho
+# Mars 3D — Exploring the Red Planet
 
-Um projeto interativo de visualização tridimensional do planeta Marte.
+An interactive 3D visualization project of the planet Mars.
 
-O objetivo é proporcionar uma experiência imersiva de exploração espacial, permitindo visualizar Marte em 3D e interagir com os elementos presentes no ambiente.
-
-> É necessário ter conexão com a internet para carregar as bibliotecas externas utilizadas pelo projeto.
-
+The goal is to provide an immersive space exploration experience, allowing users to view Mars in 3D and interact with elements within the environment.
