@@ -22,8 +22,8 @@ Mars is a hostile environment: rugged terrain, an extremely thin atmosphere, dus
 
 ## 👥 Team
 
-| Name | Role |
+| Name | Git Hub |
 | --- | --- |
-| _Thajla Lawane_ | _Development / Data_ |
-| _Felipe Baviera_ | _Design / UX_ |
-| _Daniel Lustosa_ | _Scientific Research_ |
+| _Thajla Lawane_ | _ _ |
+| _Felipe Baviera_ | _ _ |
+| _Daniel Lustosa_ | _ _ |
