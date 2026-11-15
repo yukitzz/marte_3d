@@ -8,7 +8,24 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  
+ 
+
+<nav id="mainNav" aria-label="Main navigation">
+  <a class="brand" href="#" data-view="map" aria-label="Mars Explorer home"><span class="brandMark">M</span><span>MARS EXPLORER</span></a>
+  <div class="navLinks">
+    <button class="navItem active" type="button" data-view="map">Martian Map</button>
+    <button class="navItem" type="button" data-view="routes">Exploration Routes</button>
+    <button class="navItem" type="button" data-view="survival">Survival Center</button>
+    <button class="navItem" type="button" data-view="resources">Natural Resources</button>
+    <button class="navItem" type="button" data-view="locations">Locations</button>
+  </div>
+  <button id="navMenuToggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+</nav>
+<aside id="sectionPanel" aria-live="polite" hidden>
+  <button id="sectionPanelClose" type="button" aria-label="Close section">×</button>
+  <div id="sectionPanelContent"></div>
+</aside>
+
 <canvas id="c"></canvas>
 <div id="loading">Generating high-resolution Mars…</div>
 <div id="hud"><div id="compass">HEADING 000° N</div><div id="coords"></div><button id="mapbtn">Load map (.jpg)</button></div>

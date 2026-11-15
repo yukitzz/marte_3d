@@ -534,16 +534,16 @@
   // Additional named surface features from NASA Mars Trek map coverage.
   // Columbus Crater is centered on the exact area shown in the user's supplied map view.
   const NASA_TREK_FEATURES = [
-    {id:'columbus',label:'COLUMBUS CRATER',lat:-29.289550234895415,lon:-165.9814422163538,zoom:6,description:'A large southern highlands impact crater. NASA Mars Trek provides dedicated MRO CTX coverage for this region.',layer:'MRO CTX · Columbus Crater Mosaic',bbox:'-167.9347° to -164.0653° longitude; -30.6920° to -27.3079° latitude'},
-    {id:'olympus',label:'OLYMPUS MONS',lat:18.65,lon:-133.8,description:'The largest known volcano in the Solar System, located in the Tharsis region.',layer:'MRO CTX · Olympus Mons mosaic'},
-    {id:'gusev',label:'GUSEV CRATER',lat:-14.5684,lon:175.4726,description:'The Spirit rover landing region, including the Columbia Hills.',layer:'MRO CTX · Gusev Crater mosaic'},
-    {id:'utopia',label:'UTOPIA PLANITIA',lat:47.668,lon:134.28,description:'The northern plains landing region of Viking 2.',layer:'Mars Express HRSC · Viking 2 landing-site mosaic'},
-    {id:'mawrth',label:'MAWRTH VALLIS',lat:24.3,lon:-19.2,description:'An ancient outflow channel with extensive clay-bearing deposits studied as a potential landing region.',layer:'Mars Express HRSC · Mawrth Vallis mosaic'},
-    {id:'kasei',label:'KASEI VALLES',lat:24.8,lon:-72.5,description:'A vast outflow channel system shaped by large volumes of flowing water in the ancient Martian past.',layer:'MRO CTX · Kasei Valles mosaic'},
-    {id:'noctis',label:'NOCTIS LABYRINTHUS',lat:-7.0,lon:-94.0,description:'A fractured terrain of intersecting valleys west of Valles Marineris.',layer:'MRO CTX · Noctis Landing mosaic'},
-    {id:'meridiani',label:'MERIDIANI PLANUM',lat:-2.0,lon:-5.0,description:'The plain explored by the Opportunity rover, known for sedimentary rocks and hematite-rich spherules.',layer:'MRO CTX · Meridiani Planum mosaic'},
-    {id:'hellas',label:'HELLAS PLANITIA',lat:-42.4,lon:70.5,description:'A vast impact basin in the southern hemisphere, among the deepest depressions on Mars.',layer:'MRO CTX · Hellas regional mosaics'},
-    {id:'arcadia',label:'ARCADIA PLANITIA',lat:39.0,lon:172.0,description:'A northern lowland region with extensive mapped imagery from the Mars Reconnaissance Orbiter.',layer:'MRO CTX · Arcadia Planitia mosaic'}
+    {id:'columbus',label:'COLUMBUS CRATER',lat:-29.289550234895415,lon:-165.9814422163538,zoom:6,description:'A large southern highlands impact crater. NASA Mars Trek provides dedicated MRO CTX coverage for this region.',layer:'MRO CTX · Columbus Crater Mosaic',bbox:'-167.9347° to -164.0653° longitude; -30.6920° to -27.3079° latitude',fact:"Sulfates and clay minerals have been detected in this crater, evidence of chemical alteration involving water.",image:'https://images-assets.nasa.gov/image/PIA15099/PIA15099~medium.jpg',imageSource:'https://photojournal.jpl.nasa.gov/catalog/PIA15099',imageCredit:'NASA / JPL / mission science teams'},
+    {id:'olympus',label:'OLYMPUS MONS',lat:18.65,lon:-133.8,description:'The largest known volcano in the Solar System, located in the Tharsis region.',layer:'MRO CTX · Olympus Mons mosaic',fact:"Olympus Mons is a giant shield volcano in the Tharsis region. Its broad volcanic edifice rises more than 22 km above the surrounding plains.",image:'https://images-assets.nasa.gov/image/PIA10020/PIA10020~medium.jpg',imageSource:'https://photojournal.jpl.nasa.gov/catalog/PIA10020',imageCredit:'NASA / JPL / mission science teams'},
+    {id:'gusev',label:'GUSEV CRATER',lat:-14.5684,lon:175.4726,description:'The Spirit rover landing region, including the Columbia Hills.',layer:'MRO CTX · Gusev Crater mosaic',fact:"Gusev is an approximately 165-kilometer-wide impact crater. NASA's Spirit rover landed here in 2004 and explored the Columbia Hills.",image:'https://images-assets.nasa.gov/image/PIA05124/PIA05124~medium.jpg',imageSource:'https://photojournal.jpl.nasa.gov/catalog/PIA05124',imageCredit:'NASA / JPL / mission science teams'},
+    {id:'utopia',label:'UTOPIA PLANITIA',lat:47.668,lon:134.28,description:'The northern plains landing region of Viking 2.',layer:'Mars Express HRSC · Viking 2 landing-site mosaic',fact:"Utopia Planitia is a vast northern lowland. HiRISE images show bumpy, pitted terrain that may have formed through mud or lava eruptions.",image:'https://images-assets.nasa.gov/image/PIA24917/PIA24917~medium.jpg',imageSource:'https://photojournal.jpl.nasa.gov/catalog/PIA24917',imageCredit:'NASA / JPL / mission science teams'},
+    {id:'mawrth',label:'MAWRTH VALLIS',lat:24.3,lon:-19.2,description:'An ancient outflow channel with extensive clay-bearing deposits studied as a potential landing region.',layer:'Mars Express HRSC · Mawrth Vallis mosaic',fact:"Mawrth Vallis preserves clay-bearing and hydrated minerals detected from orbit. The valley records ancient water-related activity.",image:'https://images-assets.nasa.gov/image/PIA23080/PIA23080~medium.jpg',imageSource:'https://photojournal.jpl.nasa.gov/catalog/PIA23080',imageCredit:'NASA / JPL / mission science teams'},
+    {id:'kasei',label:'KASEI VALLES',lat:24.8,lon:-72.5,description:'A vast outflow channel system shaped by large volumes of flowing water in the ancient Martian past.',layer:'MRO CTX · Kasei Valles mosaic',fact:"Kasei Valles is a large outflow-channel system carved by powerful flows of water in Mars' ancient past.",image:'https://images-assets.nasa.gov/image/PIA15213/PIA15213~medium.jpg',imageSource:'https://photojournal.jpl.nasa.gov/catalog/PIA15213',imageCredit:'NASA / JPL / mission science teams'},
+    {id:'noctis',label:'NOCTIS LABYRINTHUS',lat:-7.0,lon:-94.0,description:'A fractured terrain of intersecting valleys west of Valles Marineris.',layer:'MRO CTX · Noctis Landing mosaic',fact:"Noctis Labyrinthus is a maze of deep valleys and fault-bounded blocks west of Valles Marineris. Images show landslides and extensive tectonic fractures.",image:'https://images-assets.nasa.gov/image/PIA10021/PIA10021~medium.jpg',imageSource:'https://photojournal.jpl.nasa.gov/catalog/PIA10021',imageCredit:'NASA / JPL / mission science teams'},
+    {id:'meridiani',label:'MERIDIANI PLANUM',lat:-2.0,lon:-5.0,description:'The plain explored by the Opportunity rover, known for sedimentary rocks and hematite-rich spherules.',layer:'MRO CTX · Meridiani Planum mosaic',fact:"Meridiani Planum contains layered sedimentary rocks and hematite-rich deposits. Opportunity explored this region after landing in 2004.",image:'https://images-assets.nasa.gov/image/PIA13082/PIA13082~medium.jpg',imageSource:'https://photojournal.jpl.nasa.gov/catalog/PIA13082',imageCredit:'NASA / JPL / mission science teams'},
+    {id:'hellas',label:'HELLAS PLANITIA',lat:-42.4,lon:70.5,description:'A vast impact basin in the southern hemisphere, among the deepest depressions on Mars.',layer:'MRO CTX · Hellas regional mosaics',fact:"Hellas Planitia is the floor of a vast ancient impact basin and includes some of the lowest elevations on Mars.",image:'https://images-assets.nasa.gov/image/PIA04723/PIA04723~medium.jpg',imageSource:'https://photojournal.jpl.nasa.gov/catalog/PIA04723',imageCredit:'NASA / JPL / mission science teams'},
+    {id:'arcadia',label:'ARCADIA PLANITIA',lat:39.0,lon:172.0,description:'A northern lowland region with extensive mapped imagery from the Mars Reconnaissance Orbiter.',layer:'MRO CTX · Arcadia Planitia mosaic',fact:"Arcadia Planitia is a northern lowland. Orbital images reveal modified craters and surface textures that help scientists study its geological history.",image:'https://images-assets.nasa.gov/image/PIA04263/PIA04263~medium.jpg',imageSource:'https://photojournal.jpl.nasa.gov/catalog/PIA04263',imageCredit:'NASA / JPL / mission science teams'}
   ];
   NASA_TREK_FEATURES.forEach(feature=>{
     routePin(gH,feature.label,feature.lat,feature.lon,false,feature);
@@ -626,15 +626,34 @@
   }
 
   const mini=$('missionMini');let miniMarker=null;
+  const miniActions=mini.querySelector('.miniActions');
+  const miniFigure=document.createElement('figure');miniFigure.className='regionPhoto';miniFigure.hidden=true;
+  const miniImage=document.createElement('img');miniImage.alt='NASA orbital image of the selected Martian region';miniImage.loading='lazy';
+  const miniCaption=document.createElement('figcaption');miniFigure.append(miniImage,miniCaption);
+  const miniFact=document.createElement('p');miniFact.className='regionFact';miniFact.hidden=true;
+  const miniCredit=document.createElement('a');miniCredit.className='regionCredit';miniCredit.target='_blank';miniCredit.rel='noopener noreferrer';miniCredit.textContent='View image and NASA/JPL caption';
+  mini.insertBefore(miniFigure,miniActions);mini.insertBefore(miniFact,miniActions);mini.insertBefore(miniCredit,miniActions);
   function openMissionMini(marker,x,y){
     miniMarker=marker;
     const mission=MISSION_ROUTES.find(m=>m.id===marker.routeId);
+    const feature=marker.feature;
     $('missionMiniTitle').textContent=marker.el.querySelector('.labelText').textContent;
-    $('missionMiniText').textContent=marker.feature
-      ? marker.feature.description+' Map layer: '+marker.feature.layer+(marker.feature.bbox?' · Map coverage: '+marker.feature.bbox:'')
+    $('missionMiniText').textContent=feature
+      ? feature.description+' Map layer: '+feature.layer+(feature.bbox?' · Map coverage: '+feature.bbox:'')
       : (mission?mission.summary:'')+(marker.orbital?' · Representative orbit, not live telemetry.':' · Mars surface location marker.');
-    $('missionMiniLand').hidden=!!marker.feature;
-    $('missionMiniMore').textContent=marker.feature?'Open NASA Mars Trek':'Mission details';
+    miniFigure.hidden=!feature?.image;
+    miniFact.hidden=!feature?.fact;
+    miniCredit.hidden=!feature?.imageSource;
+    if(feature?.image){
+      miniImage.src=feature.image;
+      miniImage.alt='NASA/JPL image illustrating '+feature.label;
+      miniCaption.textContent=(feature.imageCredit||'NASA/JPL')+' · '+feature.image.split('/').pop().replace('.jpg','');
+      miniCredit.href=feature.imageSource;
+      miniImage.onerror=()=>{miniFigure.hidden=true;};
+    }
+    miniFact.textContent=feature?.fact||'';
+    $('missionMiniLand').hidden=!!feature;
+    $('missionMiniMore').textContent=feature?'Open NASA Mars Trek':'Mission details';
     $('missionMiniLand').textContent=marker.orbital?'View simulated surface':'Dive to surface';
     mini.style.display='block';
     const w=mini.offsetWidth,h=mini.offsetHeight;
@@ -1438,6 +1457,85 @@
       $('compass').textContent = 'HEADING ' + String(Math.round(hd) % 360).padStart(3, '0') + '° ' + ['N', 'NE', 'L', 'SE', 'S', 'SO', 'O', 'NO'][Math.round(hd / 45) % 8];
     }
   }
+
+  // Main navigation: map, routes, survival, resources, and named locations.
+  const mainNav=$('mainNav'),sectionPanel=$('sectionPanel'),sectionContent=$('sectionPanelContent');
+  const navMenuToggle=$('navMenuToggle');
+  function renderExplorerSection(view){
+    const titles={
+      routes:['EXPLORATION ROUTES','Explore mission areas and representative paths across the Martian surface.'],
+      survival:['SURVIVAL CENTER','Environmental reference values for planning a human mission on Mars.'],
+      resources:['NATURAL RESOURCES','Regions and materials that could support future robotic and crewed exploration.'],
+      locations:['MARTIAN LOCATIONS','Select a named region to focus the globe and inspect its NASA image and science notes.']
+    };
+    if(view==='map'){sectionPanel.hidden=true;return;}
+    const [title,lead]=titles[view];
+    let body='';
+    if(view==='routes'){
+      body=`<div class="sectionEyebrow">Mission route directory</div>`+
+        MISSION_ROUTES.map(m=>`<button class="routeButton" type="button" data-route-open="${m.id}"><span>${m.name}</span><span>VIEW ↗</span></button>`).join('')+
+        `<div class="notice">Route lines and orbital paths are illustrative references, not live navigation, rover telemetry, or verified GPS tracks.</div>`;
+    }else if(view==='survival'){
+      body=`<div class="sectionEyebrow">Environmental conditions · approximate</div>
+        <div class="dataGrid">
+          <article class="infoCard"><span class="dataValue">−65 °C</span><h3>Typical surface temperature</h3><p>Average conditions are far below freezing; local values vary strongly by season, latitude, and time of day.</p></article>
+          <article class="infoCard"><span class="dataValue">−125 to 20 °C</span><h3>Possible temperature range</h3><p>Near-surface temperatures can swing from very cold polar nights to relatively mild equatorial afternoons.</p></article>
+          <article class="infoCard"><span class="dataValue">~6 mbar</span><h3>Atmospheric pressure</h3><p>The atmosphere is extremely thin compared with Earth's and is composed mostly of carbon dioxide.</p></article>
+          <article class="infoCard"><span class="dataValue">High</span><h3>Radiation exposure</h3><p>Mars lacks a global magnetic field and has a thin atmosphere, so surface radiation is a major mission-design concern.</p></article>
+          <article class="infoCard"><span class="dataValue">Global</span><h3>Dust</h3><p>Fine dust can reduce visibility, coat equipment, affect solar power, and sometimes grow into planet-wide storms.</p></article>
+          <article class="infoCard"><span class="dataValue">96%</span><h3>Carbon dioxide</h3><p>Carbon dioxide dominates the Martian atmosphere; it is not breathable and does not provide human protection.</p></article>
+        </div>
+        <div class="notice">These are general scientific reference values, not real-time weather or a certified habitat-safety system. A crew would require a pressurized habitat, oxygen supply, radiation shielding, thermal control, and dust protection.</div>`;
+    }else if(view==='resources'){
+      body=`<div class="infoCard"><h3>Subsurface water ice</h3><p>Orbital observations indicate water ice beneath parts of the Martian surface, especially at higher latitudes. Ice could become a resource for drinking water, oxygen production, and rocket propellant after extraction and processing.</p></div>
+        <div class="infoCard"><h3>Regolith and soil</h3><p>Local soil and broken rock may provide construction feedstock or shielding material. Their chemistry, dust content, and perchlorate salts must be assessed before use.</p></div>
+        <div class="infoCard"><h3>Atmospheric carbon dioxide</h3><p>CO₂ in the atmosphere could be processed to produce oxygen and, with hydrogen, methane-based propellant. This requires energy and industrial equipment.</p></div>
+        <div class="infoCard"><h3>Hydrated minerals</h3><p>Clay-bearing and sulfate-rich deposits record interactions between rocks and water. They are valuable science targets and may help identify ancient habitable environments.</p></div>
+        <div class="notice">Resource indicators are scientific prospects, not confirmed mineable reserves. Accessibility, depth, purity, extraction energy, and environmental constraints must be measured at each site.</div>`;
+    }else if(view==='locations'){
+      body=`<div class="sectionEyebrow">NASA Trek reference regions</div><div class="locationGrid">`+
+        NASA_TREK_FEATURES.map(f=>`<button class="locationCard" type="button" data-location-open="${f.id}">
+          <img src="${f.image||''}" alt="NASA image of ${f.label}" loading="lazy">
+          <span class="locationInfo"><strong>${f.label}</strong><small>${f.fact||f.description}</small></span>
+        </button>`).join('')+
+        `</div><div class="notice">Images are loaded from NASA/JPL public image records. Select a card to focus the globe; select the map marker for the full region information.</div>`;
+    }
+    sectionContent.innerHTML=`<div class="sectionEyebrow">Mars explorer / field guide</div><h2>${title}</h2><p class="sectionLead">${lead}</p>${body}`;
+    sectionPanel.hidden=false;
+    const close=$('sectionPanelClose');if(close)close.onclick=()=>{sectionPanel.hidden=true;};
+    sectionContent.querySelectorAll('[data-route-open]').forEach(button=>{
+      button.addEventListener('click',()=>{
+        const route=MISSION_ROUTES.find(m=>m.id===button.dataset.routeOpen);
+        if(route){showMission(route);sectionPanel.hidden=true;}
+      });
+    });
+    sectionContent.querySelectorAll('[data-location-open]').forEach(button=>{
+      button.addEventListener('click',()=>{
+        const feature=NASA_TREK_FEATURES.find(f=>f.id===button.dataset.locationOpen);
+        if(!feature)return;
+        missionFocus(feature.lat,feature.lon);
+        const marker=routeMarkerItems.find(item=>item.feature&&item.feature.id===feature.id);
+        if(marker)openMissionMini(marker,Math.min(innerWidth-350,innerWidth*.5),Math.min(innerHeight-260,innerHeight*.42));
+        if(innerWidth<=640){mainNav.classList.remove('menuOpen');navMenuToggle.setAttribute('aria-expanded','false');}
+      });
+    });
+    sectionContent.querySelectorAll('.locationCard img').forEach(img=>img.addEventListener('error',()=>{img.style.visibility='hidden';}));
+  }
+  mainNav.querySelectorAll('[data-view]').forEach(button=>{
+    button.addEventListener('click',()=>{
+      const view=button.dataset.view;
+      mainNav.querySelectorAll('.navItem').forEach(item=>item.classList.toggle('active',item===button||(view==='map'&&item.dataset.view==='map')));
+      if(view==='map'){sectionPanel.hidden=true;}else{renderExplorerSection(view);}
+      mainNav.classList.remove('menuOpen');
+      navMenuToggle.setAttribute('aria-expanded','false');
+    });
+  });
+  navMenuToggle.onclick=()=>{
+    const open=mainNav.classList.toggle('menuOpen');
+    navMenuToggle.setAttribute('aria-expanded',String(open));
+  };
+  $('sectionPanelClose').onclick=()=>{sectionPanel.hidden=true;};
+
   setVisibleRoute('jezero');
   animate();
   addEventListener('resize', () => { camera.aspect = surfCam.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); surfCam.updateProjectionMatrix(); if (composer) { const pr = renderer.getPixelRatio(); composer.setSize(innerWidth * pr, innerHeight * pr); } renderer.setSize(innerWidth, innerHeight); });
