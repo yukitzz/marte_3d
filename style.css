@@ -120,3 +120,6 @@
 #missionHud{top:78px;right:18px}
 @media(max-width:850px){#missionHud{top:70px;right:9px;left:auto}}
 @media(max-width:640px){#missionHud{top:68px;right:9px;left:auto;max-width:calc(100vw - 18px)}}
+
+/* The main navbar is the only navigation. Legacy mission route strip is hidden; routes remain in the main Exploration Routes section. */
+#missionHud{display:none!important}
