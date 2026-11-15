@@ -26,6 +26,101 @@
   }
   const sky = new THREE.Group(); sky.add(stars(6000, 1.4), stars(600, 2.4)); scene.add(sky);
 
+  // ---------- Deep-space skybox: 360° Milky Way, cosmic dust, dark nebulae and colored stars ----------
+  // Huge BackSide sphere, depthWrite/depthTest off and a very low renderOrder: it is always drawn first,
+  // never hides Mars, the planets, the Sun glow or the orbit lines, and is kept dim on purpose (no tone mapping).
+  const GAL_N = (() => { const l = Math.hypot(0.5, 0.7, 0.5); return [0.5 / l, 0.7 / l, 0.5 / l]; })(); // galactic-plane normal
+  const GAL_C = (() => { const l = Math.hypot(0.58, 0.81); return [0, -0.58 / l, 0.81 / l]; })();       // galactic-center direction
+  function milkyWayField(W, H) {
+    const hs = (x, y, z) => { let h = (Math.imul(x, 374761393) + Math.imul(y, 668265263) + Math.imul(z, 1274126177)) | 0; h = Math.imul(h ^ (h >>> 13), 1103515245); h ^= h >>> 16; return (h >>> 0) / 4294967296; };
+    const vn = (x, y, z) => {
+      const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z), xf = x - xi, yf = y - yi, zf = z - zi;
+      const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf), w = zf * zf * (3 - 2 * zf);
+      const a = hs(xi, yi, zi), b = hs(xi + 1, yi, zi), c = hs(xi, yi + 1, zi), d = hs(xi + 1, yi + 1, zi);
+      const e = hs(xi, yi, zi + 1), f = hs(xi + 1, yi, zi + 1), g = hs(xi, yi + 1, zi + 1), h = hs(xi + 1, yi + 1, zi + 1);
+      const x1 = a + (b - a) * u, x2 = c + (d - c) * u, x3 = e + (f - e) * u, x4 = g + (h - g) * u;
+      const y1 = x1 + (x2 - x1) * v, y2 = x3 + (x4 - x3) * v; return y1 + (y2 - y1) * w;
+    };
+    const fbm = (x, y, z, o) => { let s = 0, a = 0.5, n = 0; for (let i = 0; i < o; i++) { s += a * vn(x, y, z); n += a; x *= 2.03; y *= 2.03; z *= 2.03; a *= 0.5; } return s / n; };
+    const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    const N = GAL_N, C = GAL_C;
+    const out = new Uint8ClampedArray(W * H * 4);
+    const cph = new Float32Array(W), sph = new Float32Array(W);
+    for (let x = 0; x < W; x++) { const ph = (x + 0.5) / W * Math.PI * 2; cph[x] = Math.cos(ph); sph[x] = Math.sin(ph); }
+    for (let y = 0; y < H; y++) {
+      const th = (y + 0.5) / H * Math.PI, st = Math.sin(th), ct = Math.cos(th);
+      for (let x = 0; x < W; x++) {
+        const dx = -cph[x] * st, dy = ct, dz = sph[x] * st, p = (y * W + x) * 4;
+        const sb = Math.max(-1, Math.min(1, dx * N[0] + dy * N[1] + dz * N[2]));
+        const b = Math.asin(sb), ang = Math.acos(Math.max(-1, Math.min(1, dx * C[0] + dy * C[1] + dz * C[2])));
+        const wr = (fbm(dx * 1.6 + 7, dy * 1.6, dz * 1.6, 3) - 0.5) * 0.24, bw = b + wr;
+        const core = Math.exp(-(bw / 0.14) * (bw / 0.14)), halo = Math.exp(-(bw / 0.38) * (bw / 0.38)), bulge = Math.exp(-(ang / 0.8) * (ang / 0.8));
+        let lum = 0, dust = 0;
+        if (halo > 0.01) {
+          const cloud = Math.min(1, Math.max(0, 0.5 + (fbm(dx * 5 + 3.1, dy * 5, dz * 5, 5) - 0.5) * 2.4)), fine = fbm(dx * 13 + 9, dy * 13, dz * 13, 3);
+          lum = core * (0.45 + 1.15 * cloud) + halo * 0.22 * (0.5 + fine);
+          lum *= 0.5 + 0.95 * bulge;
+          const lane = Math.exp(-Math.pow((bw - 0.015 + (fbm(dx * 3 + 20, dy * 3, dz * 3, 3) - 0.5) * 0.12) / 0.05, 2));
+          const dn = fbm(dx * 9 + 40, dy * 9, dz * 9, 4);
+          const patch = sm(0.42, 0.7, fbm(dx * 6 + 60, dy * 6, dz * 6, 3));
+          dust = Math.min(0.9, lane * patch * (0.3 + 0.9 * dn) * 0.85 + core * Math.max(0, dn - 0.58) * 1.3);
+          const blot = sm(0.58, 0.8, fbm(dx * 4 + 80, dy * 4, dz * 4, 4)) * halo; dust = Math.min(0.95, dust + blot * 0.65);
+          lum *= 1 - dust;
+        }
+        const t = Math.min(1, bulge * 1.25 + core * 0.25);
+        let r = 0.5 + 0.5 * t, g = 0.6 + 0.24 * t, bl = 0.92 - 0.26 * t; // blue-white arms -> warm core
+        const G = 0.23;
+        r *= lum * G; g *= lum * G; bl *= lum * G;
+        const nb = sm(0.58, 0.95, fbm(dx * 2.6 + 120, dy * 2.6, dz * 2.6, 4)) * 0.6 * (halo * 0.9 + 0.1), pick = sm(0.45, 0.55, fbm(dx * 1.3 + 200, dy * 1.3, dz * 1.3, 2));
+        r += nb * (0.2 * (1 - pick) + 0.05 * pick); g += nb * (0.05 * (1 - pick) + 0.13 * pick); bl += nb * (0.09 * (1 - pick) + 0.19 * pick);
+        const gl = Math.pow(fbm(dx * 2 + 300, dy * 2, dz * 2, 3), 2.2) * 0.07 * (0.3 + halo);
+        r += gl * 0.95; g += gl * 0.7; bl += gl * 0.65;
+        out[p] = Math.min(255, (0.005 + r) * 255); out[p + 1] = Math.min(255, (0.007 + g) * 255); out[p + 2] = Math.min(255, (0.014 + bl) * 255); out[p + 3] = 255;
+      }
+    }
+    return out;
+  }
+
+  function createSkybox() {
+    const mat = new THREE.MeshBasicMaterial({ color: 0x020308, side: THREE.BackSide, depthWrite: false, depthTest: false, fog: false, toneMapped: false });
+    const mesh = new THREE.Mesh(new THREE.SphereGeometry(4200, 48, 32), mat);
+    mesh.name = 'Milky Way skybox'; mesh.renderOrder = -1000; mesh.frustumCulled = false;
+    sky.add(mesh); // rotates together with the star field
+    // Textures are generated right after the first frame so the page never blocks on this.
+    setTimeout(() => {
+      const W = Math.min(4096, renderer.capabilities.maxTextureSize || 2048), H = W / 2, fw = 768, fh = 384;
+      let s = 20260611; const rand = () => { s = (s + 0x6D2B79F5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+      const small = document.createElement('canvas'); small.width = fw; small.height = fh;
+      small.getContext('2d').putImageData(new ImageData(milkyWayField(fw, fh), fw, fh), 0, 0);
+      const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const g = cv.getContext('2d');
+      g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high'; g.drawImage(small, 0, 0, W, H);
+      // random direction -> equirect pixel; density follows the galactic band
+      const PAL = [[170, 195, 255], [235, 242, 255], [255, 240, 212], [255, 212, 162], [255, 172, 132]];
+      const pickCol = () => { const t = rand(); return PAL[t < 0.12 ? 0 : t < 0.45 ? 1 : t < 0.75 ? 2 : t < 0.93 ? 3 : 4]; };
+      const starPos = bandBias => {
+        for (let tries = 0; tries < 12; tries++) {
+          const y = 2 * rand() - 1, ph = rand() * Math.PI * 2, r = Math.sqrt(1 - y * y), dx = r * Math.cos(ph), dz = r * Math.sin(ph);
+          const b = Math.asin(Math.max(-1, Math.min(1, dx * GAL_N[0] + y * GAL_N[1] + dz * GAL_N[2])));
+          if (rand() < (1 - bandBias) + bandBias * Math.exp(-(b / 0.32) * (b / 0.32))) {
+            const phi = Math.atan2(dz, -dx), u = (phi < 0 ? phi + Math.PI * 2 : phi) / (Math.PI * 2);
+            return [u * W, Math.acos(y) / Math.PI * H];
+          }
+        }
+        return [rand() * W, rand() * H];
+      };
+      for (let i = 0; i < 70000; i++) { const [x, y] = starPos(0.88), c = pickCol(), a = 0.07 + 0.45 * rand() * rand(); g.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${a.toFixed(2)})`; g.fillRect(x, y, 1, 1); }
+      for (let i = 0; i < 2600; i++) { const [x, y] = starPos(0.55), c = pickCol(), a = 0.35 + 0.5 * rand(), z = 1 + rand() * 0.9; g.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${a.toFixed(2)})`; g.fillRect(x, y, z, z); }
+      for (let i = 0; i < 70; i++) { // few brighter stars with a soft halo, varied brightness and color
+        const [x, y] = starPos(0.3), c = pickCol(), rad = 3 + rand() * 4, gr = g.createRadialGradient(x, y, 0, x, y, rad);
+        gr.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},.85)`); gr.addColorStop(0.35, `rgba(${c[0]},${c[1]},${c[2]},.22)`); gr.addColorStop(1, `rgba(${c[0]},${c[1]},${c[2]},0)`);
+        g.fillStyle = gr; g.fillRect(x - rad, y - rad, rad * 2, rad * 2);
+      }
+      const tex = new THREE.CanvasTexture(cv); tex.encoding = THREE.sRGBEncoding; tex.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+      mat.map = tex; mat.color.set(0xffffff); mat.needsUpdate = true;
+    }, 60);
+  }
+  createSkybox();
+
   function glowTex(rgb) {
     const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d'), r = g.createRadialGradient(32, 32, 0, 32, 32, 32);
     r.addColorStop(0, `rgba(${rgb},1)`); r.addColorStop(0.3, `rgba(${rgb},.5)`); r.addColorStop(1, `rgba(${rgb},0)`); g.fillStyle = r; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c);
@@ -724,27 +819,54 @@
     }
     mini.style.display='none';
   };
+  // Label declutter: priority + zoom tiers + screen-space collision test.
+  // Secondary names only appear when the camera is closer than LABEL_SECONDARY_ZOOM; overlapping labels are
+  // resolved by priority, nudging important ones vertically a little, otherwise the lower-priority one is hidden.
+  const SITE_LABEL_PRIORITY = { perseverance: 100, curiosity: 96, insight: 94, pathfinder: 92, viking2: 90, ingenuity: 60 };
+  const FEATURE_LABEL_PRIORITY = { olympus: 88, hellas: 84, gusev: 80, columbus: 68, utopia: 56, noctis: 50, meridiani: 48, mawrth: 46, kasei: 44, arcadia: 40 };
+  const SECONDARY_FEATURES = new Set(['utopia', 'noctis', 'meridiani', 'mawrth', 'kasei', 'arcadia']);
+  const LABEL_SECONDARY_ZOOM = 8.5, LABEL_ROW_H = 24;
+  addEventListener('resize', () => { for (const m of routeMarkerItems) m.w = 0; });
   function updateRouteLabels(){
     const active=mode==='space'&&mars&&mars.visible;
-    if(!active){for(const m of routeMarkerItems)m.el.classList.remove('visible');return;}
+    if(!active){for(const m of routeMarkerItems){m.el.classList.remove('visible');m.shown=false;}return;}
     mars.updateWorldMatrix(true,false);
     const center=mars.getWorldPosition(new THREE.Vector3());
     const toCamera=camera.position.clone().sub(center).normalize();
     const forward=new THREE.Vector3();camera.getWorldDirection(forward);
+    const dist=camera.position.distanceTo(center), cands=[];
+    const hide=m=>{m.el.classList.remove('visible');m.shown=false;};
     for(const m of routeMarkerItems){
-      const selected=m.routeId===routeSelection;
       const show=!!m.siteId || !!m.feature;
-      if(!show){m.el.classList.remove('visible');continue;}
+      if(!show){hide(m);continue;}
       const world=m.orbital?m.pt.clone():mars.localToWorld(m.pt.clone());
       const norm=world.clone().sub(center).normalize();
-      if(!m.orbital && norm.dot(toCamera)<=.065){m.el.classList.remove('visible');continue;}
+      if(!m.orbital && norm.dot(toCamera)<=.065){hide(m);continue;}
       const depth=world.clone().sub(camera.position).dot(forward);
-      if(depth<=0){m.el.classList.remove('visible');continue;}
+      if(depth<=0){hide(m);continue;}
       const p=world.project(camera);
-      if(p.z>1||p.z< -1||Math.abs(p.x)>1.02||Math.abs(p.y)>1.02){m.el.classList.remove('visible');continue;}
-      m.el.style.left=((p.x+1)*.5*innerWidth-11).toFixed(1)+'px';
-      m.el.style.top=((1-p.y)*.5*innerHeight).toFixed(1)+'px';
-      m.el.classList.add('visible');
+      if(p.z>1||p.z< -1||Math.abs(p.x)>1.02||Math.abs(p.y)>1.02){hide(m);continue;}
+      const key=m.siteId||(m.feature&&m.feature.id), secondary=!m.siteId&&SECONDARY_FEATURES.has(key);
+      if(secondary && dist>LABEL_SECONDARY_ZOOM){hide(m);continue;}
+      const pr=(m.siteId?SITE_LABEL_PRIORITY[m.siteId]:FEATURE_LABEL_PRIORITY[key])||30;
+      cands.push({m,x:(p.x+1)*.5*innerWidth-11,y:(1-p.y)*.5*innerHeight,pr,secondary});
+    }
+    // Highest priority first; labels already on screen win ties (avoids flicker while rotating).
+    cands.sort((a,b)=>(b.pr-a.pr)||((b.m.shown?1:0)-(a.m.shown?1:0)));
+    const placed=[];
+    for(const c of cands){
+      const m=c.m, w=m.w||(m.w=m.el.offsetWidth)||130, pad=m.shown?1:6;
+      const offsets=c.secondary?[0,LABEL_ROW_H]:[0,LABEL_ROW_H,-LABEL_ROW_H];
+      let done=false;
+      for(const off of offsets){
+        const r={x0:c.x-pad,x1:c.x+w+pad,y0:c.y+off-LABEL_ROW_H/2-pad,y1:c.y+off+LABEL_ROW_H/2+pad};
+        if(placed.some(q=>r.x0<q.x1&&r.x1>q.x0&&r.y0<q.y1&&r.y1>q.y0))continue;
+        placed.push(r);
+        m.el.style.left=c.x.toFixed(1)+'px';
+        m.el.style.top=(c.y+off).toFixed(1)+'px';
+        m.el.classList.add('visible');m.shown=true;done=true;break;
+      }
+      if(!done)hide(m);
     }
   }
   function showSurfaceRoute(){
