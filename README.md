@@ -18,6 +18,7 @@ Our project is an interactive 3D experience focused on Mars exploration and mapp
 - ChatGPT (OpenAI)
 - Claude (Anthropic)
 - 3D Visualization
+- Vercel website hosting
 
 ## 📦 Getting Started
 
