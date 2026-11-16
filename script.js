@@ -1,3 +1,4 @@
+
 (function () {
   // ================================================================
   // MAPA REAL EQUIRETANGULAR DE MARTE — COLE O BASE64 AQUI
@@ -385,8 +386,8 @@
   const robotHud=document.createElement('div');
   robotHud.id='robot-hud';
   Object.assign(robotHud.style,{position:'fixed',left:'10px',top:'auto',bottom:'10px',width:'56px',height:'64px',display:'block',zIndex:'12',pointerEvents:'none',touchAction:'none',cursor:'default',background:'transparent',userSelect:'none'});
-  robotHud.title='Assistente fixo';
-  robotHud.setAttribute('aria-label','Robô assistente em posição fixa');
+  robotHud.title='Robot assistant';
+  robotHud.setAttribute('aria-label','Fixed robot assistant');
   document.body.appendChild(robotHud);
   // O robô usa o renderizador principal: elimina um segundo contexto WebGL, que podia causar falhas de vídeo.
   camera.add(rig);
@@ -451,8 +452,8 @@
   const TIPS = ['Tip: drag to rotate Mars and scroll to zoom in.', 'Click Mars to explore its most famous locations.'];
   // Balão acima do canvas, sem sobreposição com a antena ou com o texto.
   robotHud.appendChild(bubble);
-  Object.assign(bubble.style,{position:'absolute',left:'62px',top:'auto',bottom:'0',maxWidth:'min(170px, calc(100vw - 80px))',boxSizing:'border-box',width:'max-content',fontSize:'10px',lineHeight:'1.25',padding:'5px 7px',zIndex:'12',flexShrink:'0',transformOrigin:'bottom left'});
-  bubble.style.setProperty('--tx','50%');
+  Object.assign(bubble.style,{position:'fixed',left:'12px',right:'auto',top:'auto',bottom:'82px',maxWidth:'min(270px, calc(100vw - 88px))',boxSizing:'border-box',width:'min(270px, calc(100vw - 88px))',minWidth:'0',fontSize:'13px',lineHeight:'1.4',padding:'11px 14px',zIndex:'28',flexShrink:'0',transformOrigin:'bottom left',transition:'left .45s ease, right .45s ease, bottom .45s ease, width .25s ease',pointerEvents:'none'});
+  bubble.style.setProperty('--tx','28px');
   // Consistent robot-assistant speech profile. The browser supplies the voice,
   // so the exact speaker can still vary by device; this profile prefers a female
   // English voice and applies the same measured, slightly synthetic delivery.
@@ -527,8 +528,8 @@
   };
   // ---------- Painel científico das missões (dados históricos, não telemetria ao vivo) ----------
   const MISSION_ROUTES = [
-    {id:'jezero',title:'01 / Jezero Crater (Perseverance rover)',name:'Perseverance · Jezero Crater',lat:18.4447,lon:77.4508,elevation:'Local elevation not displayed (no DEM/MOLA data in this project)',status:'Surface exploration',summary:'Perseverance landed in Jezero, an ancient lake basin with delta sediment deposits. This marker shows the landing site, not the rover current position.',metrics:[['Latitude','18.4447° N'],['Longitude','77.4508° E'],['Landing','February 18, 2021'],['Crater','about 45 km across']],milestones:['Landing on the crater floor (2021)','Investigation of ancient delta sedimentary rocks','Collection and caching of rock samples'],fact:'Perseverance landed in Jezero in 2021 to investigate rocks and possible signs of ancient microbial life.',source:'https://science.nasa.gov/mission/mars-2020-perseverance/',note:'Coordinates identify the landing site, not the rover current position.'},
-    {id:'ingenuity',title:'02 / Aerial exploration (Ingenuity helicopter)',name:'Ingenuity · Aerial exploration',lat:18.44486,lon:77.45102,elevation:'Maximum flight altitude: 24 m above the surface',status:'Mission ended · January 2024',summary:'The first aircraft to achieve powered, controlled flight on another planet. The marker identifies its Jezero operations area, not a complete GPS route.',metrics:[['Latitude','18.4449° N (reference)'],['Longitude','77.4510° E (reference)'],['Flights','72'],['Distance','more than 17 km total'],['First flight','April 19, 2021'],['Final flight','January 18, 2024']],milestones:['First powered, controlled flight on Mars','Terrain scouting for Perseverance','Flight 72: rotor blade damage and mission conclusion'],fact:'Ingenuity completed 72 flights and traveled more than 17 km before its mission ended in 2024.',source:'https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/',note:'Reference coordinates for the operations area; detailed flight tracks have not been imported.'},
+    {id:'jezero',title:'01 / Aerial exploration (Ingenuity helicopter)',name:'Ingenuity · Aerial exploration',lat:18.4447,lon:77.4508,elevation:'Local elevation not displayed (no DEM/MOLA data in this project)',status:'Surface exploration',summary:'Perseverance landed in Jezero, an ancient lake basin with delta sediment deposits. This marker shows the landing site, not the rover current position.',metrics:[['Latitude','18.4447° N'],['Longitude','77.4508° E'],['Landing','February 18, 2021'],['Crater','about 45 km across']],milestones:['Landing on the crater floor (2021)','Investigation of ancient delta sedimentary rocks','Collection and caching of rock samples'],fact:'Perseverance landed in Jezero in 2021 to investigate rocks and possible signs of ancient microbial life.',source:'https://science.nasa.gov/mission/mars-2020-perseverance/',note:'Coordinates identify the landing site, not the rover current position.'},
+    {id:'ingenuity',title:'02 / Jezero Crater (Perseverance rover)',name:'Perseverance · Jezero Crater',lat:18.44486,lon:77.45102,elevation:'Maximum flight altitude: 24 m above the surface',status:'Mission ended · January 2024',summary:'The first aircraft to achieve powered, controlled flight on another planet. The marker identifies its Jezero operations area, not a complete GPS route.',metrics:[['Latitude','18.4449° N (reference)'],['Longitude','77.4510° E (reference)'],['Flights','72'],['Distance','more than 17 km total'],['First flight','April 19, 2021'],['Final flight','January 18, 2024']],milestones:['First powered, controlled flight on Mars','Terrain scouting for Perseverance','Flight 72: rotor blade damage and mission conclusion'],fact:'Ingenuity completed 72 flights and traveled more than 17 km before its mission ended in 2024.',source:'https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/',note:'Reference coordinates for the operations area; detailed flight tracks have not been imported.'},
     {id:'escapade',title:'03 / ESCAPADE twin spacecraft',name:'ESCAPADE · Blue and Gold',lat:0,lon:0,elevation:'Orbital altitude: not available',status:'Interplanetary cruise · arrival expected September 2027',summary:'The two spacecraft will study the solar wind, Mars hybrid magnetosphere, and atmospheric escape. ESCAPADE is an orbital mission and has no landing site.',metrics:[['Spacecraft','2 orbiters'],['Launch','November 13, 2025'],['Earth flyby','November 2026'],['Expected arrival','September 2027'],['Science phase','planned from 2028']],milestones:['Powered Earth flybys completed in November 2026','Mars orbit insertion planned for September 2027','Dual-spacecraft science orbits are still upcoming'],fact:'ESCAPADE is still in transit; both spacecraft are expected to reach Mars in September 2027.',source:'https://science.nasa.gov/science-research/heliophysics/nasas-escapade-completes-powered-earth-flybys-now-en-route-to-mars/',note:'The globe marker is only a visual reference; ESCAPADE has no Mars landing coordinates or live Mars-orbit telemetry.',orbital:true},
     {id:'history',title:'04 / Historic Mars landing sites',name:'Historic Mars landing sites',lat:19.13,lon:-33.22,elevation:'Local elevations not imported',status:'Mission archive · 1976–2021',summary:'Historic landing sites for spacecraft and rovers. The globe initially centers on Pathfinder, whose surface scene is available in this project.',metrics:[['Viking 1','22.269° N · 47.951°W'],['Viking 2','47.668° N · 134.280° E'],['Pathfinder','19.13° N · 33.22°W'],['Spirit','14.568° S · 175.473° E'],['Opportunity','1.95° S · 5.53° E'],['Curiosity','4.5895° S · 137.4417° E'],['InSight','4.502° N · 135.623° E'],['Perseverance','18.4447° N · 77.4508° E']],milestones:['Viking 1 and Viking 2 (1976)','Pathfinder and Sojourner (1997)','Spirit and Opportunity (2004)','Curiosity (2012), InSight (2018), Perseverance (2021)'],fact:'Pathfinder landed in Ares Vallis in 1997 and carried the small Sojourner rover.',source:'https://ode.rsl.wustl.edu/mars/pagehelp/Content/Missions_Instruments/Landing_Sites.htm',note:'Historical landing coordinates, not complete rover traverse tracks.'}
   ];
@@ -614,39 +615,87 @@
     document.querySelectorAll('#missionList button').forEach(b=>b.classList.toggle('selected',b.dataset.route===id));
     $('missionMini').style.display='none';
   }
-  // ESCAPADE is an orbital mission: show two distinct spacecraft, never a fake landing.
-  const escapadeSystem = new THREE.Group();
-  escapadeSystem.name = 'ESCAPADE Blue and Gold twin orbiters (illustrative)';
-  const escapadeOrbitPoints=[];
-  for(let i=0;i<=180;i++){const a=i/180*Math.PI*2;escapadeOrbitPoints.push(new THREE.Vector3(Math.cos(a)*3.15,Math.sin(a)*3.15*.72,0));}
-  const escapadeOrbit = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(escapadeOrbitPoints),new THREE.LineBasicMaterial({color:0x79b8d5,transparent:true,opacity:.52}));
-  escapadeOrbit.rotation.set(.42,.18,.22);escapadeSystem.add(escapadeOrbit);
-  function makeEscapadeOrbiter(bodyColor,panelColor,phase){
-    const craft=new THREE.Group();
-    const body=new THREE.Mesh(new THREE.BoxGeometry(.18,.14,.22),new THREE.MeshStandardMaterial({color:bodyColor,metalness:.58,roughness:.42}));craft.add(body);
-    const panelMat=new THREE.MeshStandardMaterial({color:panelColor,metalness:.35,roughness:.5,emissive:panelColor,emissiveIntensity:.12});
-    for(const side of [-1,1]){const panel=new THREE.Mesh(new THREE.BoxGeometry(.34,.012,.18),panelMat);panel.position.x=side*.27;craft.add(panel);}
-    const antenna=new THREE.Mesh(new THREE.CylinderGeometry(.008,.008,.13,6),new THREE.MeshStandardMaterial({color:0xc9cdd0,metalness:.6}));antenna.position.y=.12;craft.add(antenna);
-    craft.userData.phase=phase;craft.userData.orbitRadius=3.15;escapadeSystem.add(craft);return craft;
+  // ESCAPADE: dedicated orbital view; spacecraft never enter the surface renderer.
+  const escapadeSystem=new THREE.Group();
+  escapadeSystem.name='ESCAPADE Blue and Gold orbital visualization';
+  const escLabels=document.createElement('div');
+  escLabels.id='escapadeLabels';
+  escLabels.innerHTML='<span id="escBlueLabel">BLUE</span><span id="escGoldLabel">GOLD</span><small>ESCAPADE / TWIN ORBITERS · ORBITAL VISUALIZATION</small>';
+  document.body.appendChild(escLabels);
+  const escMetal=new THREE.MeshStandardMaterial({color:0xa9b2b8,metalness:.88,roughness:.28});
+  const escGoldMat=new THREE.MeshStandardMaterial({color:0xb98a42,metalness:.77,roughness:.36});
+  const escDark=new THREE.MeshStandardMaterial({color:0x27333d,metalness:.55,roughness:.52});
+  const escSolar=new THREE.MeshStandardMaterial({color:0x35485d,metalness:.48,roughness:.35,side:THREE.DoubleSide});
+  function escRod(group,a,b,r,material){
+    const v=new THREE.Vector3().subVectors(b,a);
+    const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r,r,v.length(),7),material);
+    mesh.position.copy(a).add(b).multiplyScalar(.5);
+    mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),v.normalize());
+    group.add(mesh);return mesh;
   }
-  const escapadeBlue=makeEscapadeOrbiter(0x9fb8c7,0x3b82b8,0);
-  const escapadeGold=makeEscapadeOrbiter(0xd5ad65,0xc38d35,Math.PI);
+  function makeEscapadeOrbiter(name,phase){
+    const craft=new THREE.Group();
+    craft.name='ESCAPADE '+name;
+    const core=new THREE.Mesh(new THREE.BoxGeometry(.29,.28,.33),escGoldMat);craft.add(core);
+    const bus=new THREE.Mesh(new THREE.BoxGeometry(.31,.12,.36),escMetal);bus.position.y=.17;craft.add(bus);
+    const dish=new THREE.Mesh(new THREE.CylinderGeometry(.16,.11,.065,28),escMetal);
+    dish.rotation.x=Math.PI/2;dish.position.set(.04,.04,.28);craft.add(dish);
+    const dishHub=new THREE.Mesh(new THREE.SphereGeometry(.035,10,8),escDark);
+    dishHub.position.set(.04,.04,.33);craft.add(dishHub);
+    escRod(craft,new THREE.Vector3(.04,.04,.3),new THREE.Vector3(.04,.04,.41),.009,escDark);
+    for(const side of [-1,1]){
+      const root=new THREE.Vector3(side*.16,.1,0),tip=new THREE.Vector3(side*.75,.1,0);
+      escRod(craft,root,tip,.012,escMetal);
+      for(let j=0;j<2;j++){
+        const panel=new THREE.Mesh(new THREE.BoxGeometry(.26,.012,.29),escSolar);
+        panel.position.set(side*(.36+j*.28),.1,0);craft.add(panel);
+        const lines=new THREE.LineSegments(new THREE.EdgesGeometry(panel.geometry),
+          new THREE.LineBasicMaterial({color:0x8996a2,transparent:true,opacity:.75}));
+        lines.position.copy(panel.position);craft.add(lines);
+      }
+    }
+    const antennaEnd=new THREE.Vector3(-.07,.64,-.08);
+    escRod(craft,new THREE.Vector3(-.07,.15,-.08),antennaEnd,.006,escMetal);
+    const tip=new THREE.Mesh(new THREE.SphereGeometry(.016,8,6),escMetal);
+    tip.position.copy(antennaEnd);craft.add(tip);
+    craft.userData.phase=phase;craft.userData.orbitRadius=3.1;
+    escapadeSystem.add(craft);
+    return craft;
+  }
+  const escapadeBlue=makeEscapadeOrbiter('BLUE',.6);
+  const escapadeGold=makeEscapadeOrbiter('GOLD',3.75);
+  const escapadeOrbitPts=[];
+  for(let i=0;i<220;i++){
+    const a=i/220*Math.PI*2;
+    escapadeOrbitPts.push(new THREE.Vector3(Math.cos(a)*3.1,Math.sin(a)*2.6,Math.sin(a)*.42));
+  }
+  const escapadeOrbit=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(escapadeOrbitPts),
+    new THREE.LineBasicMaterial({color:0x88aabd,transparent:true,opacity:.45,depthWrite:false}));
+  escapadeSystem.add(escapadeOrbit);
   escapadeSystem.visible=false;scene.add(escapadeSystem);
   function updateOrbitalTracks(time){
-    const active=activeMissionRoute==='escapade' && mode!=='surface';
+    const active=activeMissionRoute==='escapade'&&mode==='space';
     escapadeSystem.visible=active;
+    escLabels.style.display=active?'block':'none';
     if(!active)return;
-    escapadeSystem.rotation.set(.42,.18,.22+time*.055);
-    [escapadeBlue,escapadeGold].forEach(craft=>{
-      const a=time*.22+craft.userData.phase,r=craft.userData.orbitRadius;
-      craft.position.set(Math.cos(a)*r,Math.sin(a)*r*.72,Math.sin(a*.5)*.22);
-      craft.lookAt(0,0,0);
-    });
+    // Independent orbital motion: two visible spacecraft around Mars.
+    const crafts=[escapadeBlue,escapadeGold];
+    for(let i=0;i<crafts.length;i++){
+      const craft=crafts[i],a=time*.065+craft.userData.phase;
+      craft.position.set(Math.cos(a)*3.1,Math.sin(a)*2.6,Math.sin(a)*.42);
+      craft.rotation.set(.12,-a*.22,.16);
+      const v=craft.position.clone().project(camera);
+      const el=document.getElementById(i===0?'escBlueLabel':'escGoldLabel');
+      const visible=v.z<1&&v.z>-1;
+      el.style.display=visible?'block':'none';
+      if(visible){el.style.left=((v.x+1)*.5*innerWidth+14)+'px';el.style.top=((-v.y+1)*.5*innerHeight-10)+'px';}
+    }
   }
 
   // CATÁLOGO DE LOCAIS: fatos históricos da NASA; terrenos são reconstruções
   // procedurais ilustrativas, não DEMs ou fotografias oficiais de cada local.
   const MISSOES_MARTE = {
+    ingenuity:{nome:'Ingenuity',local:'Wright Brothers Field / Jezero',pouso:'April 19, 2021',lat:18.44486,lon:77.45102,desc:'First powered, controlled flight on another planet; 72 flights completed.',ceu:'#c9a378',solo:'#b5834d',tipo:'airfield',equip:'none',fonte:'https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/'},
     perseverance:{nome:'Perseverance',local:'Jezero Crater',pouso:'February 18, 2021',lat:18.4447,lon:77.4508,desc:'Searches for evidence of ancient microbial life in sediments from an ancient lake and river delta.',ceu:'#c99666',solo:'#8a5a3c',tipo:'jezero',equip:'rover',fonte:'https://science.nasa.gov/mission/mars-2020-perseverance/'},
     curiosity:{nome:'Curiosity',local:'Gale Crater / Mount Sharp',pouso:'August 6, 2012 (UTC)',lat:-4.5895,lon:137.4417,desc:'Studies layers of sedimentary rock on Mount Sharp to investigate ancient environments that may have been habitable.',ceu:'#bfa07a',solo:'#6e523d',tipo:'gale',equip:'rover',fonte:'https://science.nasa.gov/mission/msl-curiosity/'},
     pathfinder:{nome:'Mars Pathfinder / Sojourner',local:'Ares Vallis',pouso:'July 4, 1997',lat:19.13,lon:-33.22,desc:'A stationary lander with solar panels and Sojourner, the first rover to explore the Martian surface.',ceu:'#c98b55',solo:'#8c4726',tipo:'pathfinder',equip:'pathfinder',fonte:'https://science.nasa.gov/mission/mars-pathfinder/'},
@@ -660,7 +709,7 @@
   let activeMissionRoute='history';
   const siteAliases={perseverance:'perseverance',jezero:'perseverance',curiosity:'curiosity',pathfinder:'pathfinder',insight:'insight',spirit:'spirit',viking2:'viking2'};
   function siteFromMarker(marker){
-    if(marker.siteId)return marker.siteId==='ingenuity'?'perseverance':(marker.siteId==='escapade'?null:marker.siteId);
+    if(marker.siteId)return marker.siteId==='escapade'?null:marker.siteId;
     const label=(marker.el?.querySelector('.labelText')?.textContent||'').toLowerCase();
     if(label.includes('perseverance')||label.includes('jezero')||label.includes('octavia'))return 'perseverance';
     if(label.includes('curiosity')||label.includes('gale'))return 'curiosity';
@@ -781,7 +830,7 @@
     selectedMission=m;activeMissionRoute=m.id;surfacePreparedRoute=null;setVisibleRoute(m.id);missionDetails.hidden=false;
     if(orbitalPhotoBackdrop)orbitalPhotoBackdrop.visible=!!m.orbital;
     if(m.id==='jezero')selectMarsSite('perseverance',false);
-    if(m.id==='ingenuity')selectMarsSite('perseverance',false);
+    if(m.id==='ingenuity'){selectMarsSite('ingenuity',false);activeMissionRoute='ingenuity';}
     if(m.id==='history')selectMarsSite('pathfinder',false);
     [...missionList.querySelectorAll('button')].forEach(b=>b.classList.toggle('selected',b.dataset.route===m.id));
     $('missionTag').textContent=m.status.toUpperCase();$('missionName').textContent=m.name;
@@ -793,7 +842,9 @@
     $('missionSource').href=m.source;
     $('missionLand').textContent=m.orbital?'Orbital mission · no landing':'Land at this location';
     $('missionLand').disabled=!!m.orbital;
-    missionFocus(m.lat,m.lon);say(m.fact,11);
+    if(m.id==='escapade') { mode='space'; fly.on=false; controls.enabled=true; camera.position.set(0,1.3,10.2);controls.target.set(0,0,0);controls.update(); }
+    else missionFocus(m.lat,m.lon);
+    say(m.fact,11);
   }
   MISSION_ROUTES.forEach(m=>{const b=document.createElement('button');b.type='button';b.dataset.route=m.id;b.textContent=m.title.replace(/^\d+ \/ /,'');b.onclick=()=>showMission(m);missionList.appendChild(b);});
   $('missionToggle').onclick=()=>{missionHud.classList.toggle('compact');$('missionToggle').textContent=missionHud.classList.contains('compact')?'+':'−';};
@@ -941,6 +992,45 @@
     const fade=t*t*(3-2*t);
     return raw*fade + alturaCrateras(x,z);
   }
+  // Jezero geological reconstruction (illustrative, not a NASA DEM).
+  // Basin center is away from the landing pad, leaving a safe player spawn.
+  const JEZERO_CENTER={x:0,z:-215}, JEZERO_WATER_LEVEL=-6;
+  const JEZERO_CHANNELS=[true,false].map(inlet=>{
+    const points=[];
+    for(let i=0;i<=24;i++){
+      const t=i/24;
+      points.push({
+        x:inlet?-330+330*t+22*fbm5(t*2.4+11,1.7):150+300*t+25*fbm5(t*2.7-7,3.4),
+        z:inlet?-450+235*t+19*fbm5(t*3.1,9.2):-225+170*t+18*fbm5(t*2.8+3,4.6)
+      });
+    }
+    return points;
+  });
+  function jezeroChannelDistance(x,z,inlet){
+    const points=JEZERO_CHANNELS[inlet?0:1];let best=1e9;
+    for(let i=1;i<points.length;i++){
+      const a=points[i-1],b=points[i],dx=b.x-a.x,dz=b.z-a.z;
+      const k=Math.max(0,Math.min(1,((x-a.x)*dx+(z-a.z)*dz)/(dx*dx+dz*dz+1e-9)));
+      best=Math.min(best,Math.hypot(x-a.x-k*dx,z-a.z-k*dz));
+    }
+    return best;
+  }
+  function jezeroLakebedHeight(x,z,base){
+    const dx=x-JEZERO_CENTER.x,dz=z-JEZERO_CENTER.z;
+    const warp=fbm5(x*.004+17,z*.004-9)*14+fbm5(x*.011-5,z*.011+3)*4;
+    const r=Math.hypot(dx*.97,dz*1.04)+warp;
+    const inside=1-THREE.MathUtils.smoothstep(r,152,226);
+    const rim=Math.exp(-Math.pow((r-234)/45,2));
+    const eroded=fbm5(x*.008+8,z*.008-6)*3.3+fbm5(x*.027,z*.027)*.9;
+    const deltaAngle=Math.atan2(dz,dx);
+    const fan=Math.max(0,1-Math.abs(deltaAngle+2.48)/.58);
+    const delta=inside*fan*(2.8+fbm5(x*.018+11,z*.018)*1.3);
+    const river=Math.min(jezeroChannelDistance(x,z,true),jezeroChannelDistance(x,z,false));
+    const valley=-12*Math.exp(-Math.pow(river/20,2))*(1-0.28*inside);
+    const basin=-24*inside+15*rim+delta+valley;
+    const safe=THREE.MathUtils.smoothstep(Math.hypot(x,z),38,88);
+    return base*.38+safe*(basin+eroded);
+  }
   function getTerrainHeight(x,z){
     const base=baseTerrainHeight(x,z);
     const m=MISSOES_MARTE[activeMarsSite];
@@ -948,7 +1038,8 @@
     const r=Math.hypot(x,z), fade=THREE.MathUtils.smoothstep(r,38,120);
     if(m.tipo==='plain')return base*.22 + fade*fbm5(x*.004+12,z*.004-8)*1.4;
     if(m.tipo==='gusev')return base*.7 + fade*Math.max(0,fbm5(x*.006,z*.006))*12;
-    if(m.tipo==='jezero')return base*.65 - fade*12*Math.exp(-Math.pow((r-190)/75,2)) + fade*Math.max(0,fbm5(x*.008,z*.008))*5;
+    if(m.tipo==='airfield')return base*.13+fbm5(x*.013+4,z*.013-2)*.48+Math.max(0,fbm5(x*.003,z*.003))*THREE.MathUtils.smoothstep(Math.hypot(x,z),95,230)*5;
+    if(m.tipo==='jezero')return jezeroLakebedHeight(x,z,base);
     if(m.tipo==='gale')return base*.55 + fade*55*Math.exp(-Math.pow((Math.hypot(x-420,z+400))/240,2));
     if(m.tipo==='volcano'){
       // Olympus Mons: vulcão-escudo continental. Este recorte representa uma
@@ -1056,6 +1147,19 @@
       const variation=.5+.32*fbm5(x*.009+21,z*.009-15)+.18*fbm5(x*.034-8,z*.034+17);
       tint.copy(low).lerp(mid,Math.max(0,Math.min(1,variation*.95+Math.max(0,h)*.0018)));
       tint.lerp(high,Math.min(.53,slope*.42));
+      if(activeMarsSite==='ingenuity'){
+        tint.copy(new THREE.Color('#b5834d')).lerp(new THREE.Color('#8c5e32'),Math.max(0,Math.min(1,.25+.22*fbm5(x*.035,z*.035))));
+      }
+      if(activeMarsSite==='perseverance'){
+        const d=Math.hypot(x-JEZERO_CENTER.x,z-JEZERO_CENTER.z);
+        const wet=1-THREE.MathUtils.smoothstep(d,125,220);
+        const ridge=THREE.MathUtils.smoothstep(h,0,24);
+        const mineral=wet*THREE.MathUtils.smoothstep(h,-24,-9)*(1-THREE.MathUtils.smoothstep(h,-9,-2));
+        const rust=new THREE.Color('#8c4f30'),ochre=new THREE.Color('#a86b46');
+        tint.copy(rust).lerp(ochre,Math.min(1,Math.max(0,.45+.24*fbm5(x*.013,z*.013)+ridge*.25)));
+        tint.lerp(new THREE.Color('#4a3b32'),wet*.82);
+        tint.lerp(new THREE.Color('#3b6e6c'),mineral*.58);
+      }
       colors.setXYZ(i,tint.r,tint.g,tint.b);
     }
     pos.needsUpdate=true;colors.needsUpdate=true;g.computeVertexNormals();
@@ -1365,16 +1469,75 @@
     };
 
     const addIngenuityModel=(x,z)=>{
-      const craft=new THREE.Group();craft.position.set(x,Hf(x,z)+.42,z);surfaceGeology.add(craft);
-      const dark=mat('#292b2a'),gold=mat('#b89a57'),metal=mat('#bfc3c2');
-      const body=new THREE.Mesh(new THREE.BoxGeometry(.34,.22,.42),gold);craft.add(body);
-      const mast=new THREE.Mesh(new THREE.CylinderGeometry(.025,.035,.28,8),metal);mast.position.y=.22;craft.add(mast);
-      const solar=new THREE.Mesh(new THREE.BoxGeometry(.44,.025,.34),mat('#263e59'));solar.position.y=.36;craft.add(solar);
-      for(const side of [-1,1]){const leg=new THREE.Mesh(new THREE.CylinderGeometry(.018,.014,.48,6),metal);leg.position.set(side*.2,-.23,.12);leg.rotation.z=side*.24;craft.add(leg);}
-      const rotorHub=new THREE.Group();rotorHub.position.y=.56;craft.add(rotorHub);
-      for(let k=0;k<2;k++){const rotor=new THREE.Group();rotor.rotation.y=k*Math.PI/2;const bladeA=new THREE.Mesh(new THREE.BoxGeometry(1.16,.018,.075),dark);bladeA.position.y=.015;rotor.add(bladeA);const bladeB=bladeA.clone();bladeB.rotation.y=Math.PI/2;rotor.add(bladeB);rotorHub.add(rotor);}
-      craft.userData.rotorHub=rotorHub;
+      const craft=new THREE.Group();craft.name='Ingenuity / NASA-inspired 3D model';
+      craft.position.set(x,Hf(x,z)+.075,z);surfaceGeology.add(craft);
+      const foil=new THREE.MeshStandardMaterial({color:0xc8bda9,metalness:.9,roughness:.25,flatShading:true});
+      const gold=new THREE.MeshStandardMaterial({color:0xb88a49,metalness:.86,roughness:.28});
+      const carbon=new THREE.MeshStandardMaterial({color:0x1c2022,metalness:.28,roughness:.64});
+      const steel=new THREE.MeshStandardMaterial({color:0xadb3b3,metalness:.83,roughness:.28});
+      const solarMat=new THREE.MeshStandardMaterial({color:0x283e48,metalness:.6,roughness:.28});
+      const part=(geo,material,px,py,pz,parent=craft)=>{const o=new THREE.Mesh(geo,material);o.position.set(px,py,pz);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;};
+      // Reflective foil-wrapped avionics box with irregular gold side panels.
+      part(new THREE.BoxGeometry(.64,.43,.57),foil,0,.58,0);
+      for(const side of [-1,1]){
+        const wrap=part(new THREE.BoxGeometry(.018,.34,.46),gold,side*.329,.57,0);
+        wrap.rotation.z=side*.035;
+      }
+      part(new THREE.BoxGeometry(.52,.045,.47),gold,0,.815,0);
+      // Four carbon-fiber legs with angled struts and separate ground-contact pads.
+      for(const sx of [-1,1])for(const sz of [-1,1]){
+        const a=new THREE.Vector3(sx*.19,.55,sz*.19),b=new THREE.Vector3(sx*1.03,.055,sz*.91);
+        const v=b.clone().sub(a),rod=part(new THREE.CylinderGeometry(.019,.022,v.length(),8),carbon,...a.clone().add(b).multiplyScalar(.5).toArray());
+        rod.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),v.normalize());
+        const foot=part(new THREE.BoxGeometry(.27,.035,.12),carbon,b.x,.038,b.z);foot.rotation.y=sz*sx*.28;
+      }
+      // Coaxial, counter-rotating rotor assemblies, separated vertically.
+      part(new THREE.CylinderGeometry(.028,.038,.84,10),steel,0,1.18,0);
+      const rotorTop=new THREE.Group(),rotorBottom=new THREE.Group();
+      rotorTop.position.y=1.55;rotorBottom.position.y=1.28;
+      craft.add(rotorTop,rotorBottom);
+      for(const [hub,index] of [[rotorTop,0],[rotorBottom,1]]){
+        part(new THREE.CylinderGeometry(.095,.095,.08,12),steel,0,0,0,hub);
+        for(const side of [-1,1]){
+          const blade=part(new THREE.BoxGeometry(1.14,.014,.105),carbon,side*.57,0,0,hub);
+          blade.rotation.z=side*.035;
+        }
+        hub.rotation.y=index*Math.PI/2;
+      }
+      // Solar panel at the top of the central mast.
+      part(new THREE.CylinderGeometry(.025,.025,.31,8),steel,0,1.77,0);
+      const panel=part(new THREE.BoxGeometry(1.02,.036,.76),solarMat,0,1.94,0);
+      for(let k=-2;k<=2;k++)part(new THREE.BoxGeometry(.012,.004,.76),steel,k*.19,1.964,0);
+      part(new THREE.BoxGeometry(1.06,.024,.025),steel,0,1.955,.37);
+      craft.userData.rotors=[rotorTop,rotorBottom];
+      craft.userData.groundY=Hf(x,z)+.075;
       return craft;
+    };
+    const addPerseveranceBackdrop=(x,z)=>{
+      const rover=new THREE.Group();rover.name='Perseverance rover (scene reconstruction)';
+      rover.position.set(x,Hf(x,z),z);surfaceGeology.add(rover);
+      const alloy=new THREE.MeshStandardMaterial({color:0x8b8580,metalness:.65,roughness:.48});
+      const black=new THREE.MeshStandardMaterial({color:0x323331,metalness:.46,roughness:.7});
+      const cream=new THREE.MeshStandardMaterial({color:0xb5a28b,metalness:.46,roughness:.62});
+      const add=(geo,mat,x,y,z)=>{const mesh=new THREE.Mesh(geo,mat);mesh.position.set(x,y,z);mesh.castShadow=true;rover.add(mesh);return mesh;};
+      add(new THREE.BoxGeometry(2.6,.62,1.85),cream,0,1.25,0);
+      add(new THREE.BoxGeometry(2.1,.12,1.5),alloy,0,1.65,0);
+      for(const side of [-1,1])for(let i=0;i<3;i++){
+        const zWheel=(i-1)*.9;
+        const wheel=add(new THREE.CylinderGeometry(.48,.48,.31,28),alloy,side*1.47,.49,zWheel);
+        wheel.rotation.z=Math.PI/2;
+        for(let rib=0;rib<22;rib++){
+          const a=rib*Math.PI*2/22;
+          const tread=add(new THREE.BoxGeometry(.35,.045,.11),black,side*1.47,.49+Math.sin(a)*.475,zWheel+Math.cos(a)*.475);
+          tread.rotation.x=-a;
+        }
+        const arm=add(new THREE.CylinderGeometry(.05,.05,.8,8),alloy,side*1.15,.83,zWheel);
+        arm.rotation.z=side*.55;
+      }
+      add(new THREE.CylinderGeometry(.07,.08,1.15,10),alloy,.55,2.08,-.42);
+      add(new THREE.BoxGeometry(.57,.35,.3),black,.55,2.66,-.42);
+      add(new THREE.BoxGeometry(.22,.19,.11),alloy,.7,2.68,-.62);
+      return rover;
     };
     const addHistoricLander=(x,z)=>{
       const lander=new THREE.Group();lander.position.set(x,Hf(x,z)+.2,z);surfaceGeology.add(lander);
@@ -1395,16 +1558,43 @@
       return roverModel;
     };
 
-    if(site==='perseverance' && activeMissionRoute==='ingenuity'){
-      // Ingenuity flight-test scene: miniature coaxial-rotor aircraft, take-off pad,
-      // low obstacle field and a cyan schematic flight corridor above Jezero terrain.
-      addDune(-18,-38,32,15,.42,.18);
-      for(let i=0;i<16;i++)addRock((rand()-.5)*42,-12-rand()*50,.18+rand()*.7);
-      const pad=new THREE.Mesh(new THREE.CircleGeometry(2.1,48),mat('#a18a72'));pad.rotation.x=-Math.PI/2;pad.position.set(-2,Hf(-2,-10)+.035,-10);surfaceGeology.add(pad);
-      const heli=addIngenuityModel(-2,-10);surfaceGeology.userData.ingenuity=heli;
-      addTracks(1,46,.78);
-      const flightPts=[new THREE.Vector3(-2,Hf(-2,-10)+2.8,-10),new THREE.Vector3(5,Hf(5,-24)+3.6,-24),new THREE.Vector3(12,Hf(12,-39)+3.2,-39),new THREE.Vector3(19,Hf(19,-54)+3.8,-54)];
-      const flightLine=new THREE.Line(new THREE.BufferGeometry().setFromPoints(flightPts),new THREE.LineDashedMaterial({color:0x4cc8d8,dashSize:.7,gapSize:.42,transparent:true,opacity:.9}));flightLine.computeLineDistances();surfaceGeology.add(flightLine);
+    if(site==='ingenuity'){
+      // Wright Brothers Field: sandy airfield, small gravel and distant eroded ridges.
+      for(let i=0;i<75;i++){
+        const x=(rand()-.5)*115,z=-3-rand()*135;
+        if(Math.hypot(x,z)>2.4)addRock(x,z,.045+rand()*.21);
+      }
+      for(let i=0;i<42;i++){const x=(rand()-.5)*24,z=-2-rand()*35;if(Math.hypot(x,z)>2)addRock(x,z,.035+rand()*.15);}
+      for(let i=0;i<8;i++){
+        const x=-180+i*52,z=-180-rand()*45;
+        addButte(x,z,25+rand()*26,9+rand()*13,5+rand()*3);
+      }
+      const heli=addIngenuityModel(0,0);
+      surfaceGeology.userData.ingenuity=heli;
+      // Rover is partly off the left side of the first-person composition.
+      addPerseveranceBackdrop(-3.2,-.5);
+      // Two parallel dark compressed wheel trails, with repeated wheel-cleat marks.
+      const trackMaterial=new THREE.MeshStandardMaterial({color:0x65452d,roughness:1,transparent:true,opacity:.8,depthWrite:false});
+      for(const side of [-1,1]){
+        const vertices=[];
+        for(let i=0;i<=68;i++){
+          const t=i/68,x=-3.2+side*.96+Math.sin(t*2.8)*.4,z=-.5-t*85;
+          vertices.push(new THREE.Vector3(x,Hf(x,z)+.027,z));
+        }
+        const curve=new THREE.CatmullRomCurve3(vertices);
+        const track=new THREE.Mesh(new THREE.TubeGeometry(curve,85,.11,5,false),trackMaterial);
+        surfaceGeology.add(track);
+        for(let i=0;i<46;i++){
+          const t=i/46,x=-3.2+side*.96+Math.sin(t*2.8)*.4,z=-.5-t*85;
+          const rib=new THREE.Mesh(new THREE.BoxGeometry(.33,.018,.065),trackMaterial);
+          rib.position.set(x,Hf(x,z)+.031,z);surfaceGeology.add(rib);
+        }
+      }
+      const dustMat=new THREE.MeshBasicMaterial({color:0xb5834d,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide});
+      const dust=new THREE.Mesh(new THREE.RingGeometry(.28,2.4,48),dustMat);
+      dust.rotation.x=-Math.PI/2;dust.position.set(0,Hf(0,0)+.045,0);
+      surfaceGeology.add(dust);heli.userData.dust=dust;
+      // Do not draw an artificial flight line: the craft itself demonstrates the route.
     }else if(site==='perseverance'){
       // Jezero: an eroded river-delta front, fan-shaped sediment beds and ancient channels.
       addButte(-7,-58,13,9,6);addButte(17,-76,8,6,5);addButte(-23,-91,7,5,4);
@@ -1469,6 +1659,134 @@
     volcanicRocks.userData.lastCx=cx;volcanicRocks.userData.lastCz=cz;
     volcanicRocks.instanceMatrix.needsUpdate=true;
   }
+  // Ancient Jezero lake / present-day desert switch, restricted to Jezero.
+  let jezeroAncient=false, jezeroWater=null, jezeroWaterTarget=-70, jezeroWaterHeight=-70;
+  const jezeroEraButton=document.getElementById('jezeroEraToggle');
+  const ingenuityFlightButton=document.getElementById('ingenuityFlightToggle');
+  const INGENUITY_FACTS=[
+    'Ingenuity made the first powered, controlled flight on another planet on April 19, 2021.',
+    'Ingenuity completed 72 flights on Mars, far beyond its original five-flight technology demonstration.',
+    'The helicopter flew in the thin Martian atmosphere using two fast-spinning coaxial rotors.',
+    'Ingenuity helped prove that aerial scouting is possible on another planet.'
+  ];
+  let ingenuityFlight={phase:'idle',time:0,elapsed:0};
+  function isIngenuityScene(){return mode==='surface'&&activeMarsSite==='ingenuity';}
+  function syncIngenuityFlightUI(){
+    ingenuityFlightButton.hidden=!isIngenuityScene();
+    ingenuityFlightButton.textContent=ingenuityFlight.phase==='idle'?'START TEST FLIGHT':'LAND HELICOPTER';
+  }
+  ingenuityFlightButton.addEventListener('click',()=>{
+    if(!isIngenuityScene())return;
+    if(ingenuityFlight.phase==='idle'){
+      ingenuityFlight={phase:'flight',time:0,elapsed:0};
+      say(INGENUITY_FACTS[0],12);
+    }else{
+      ingenuityFlight.phase='landing';ingenuityFlight.time=0;
+      say('Ingenuity is returning to its landing zone.',8);
+    }
+    syncIngenuityFlightUI();
+  });
+  function updateIngenuityFlight(dt,t){
+    if(!isIngenuityScene()||!surfaceGeology||!surfaceGeology.userData.ingenuity)return;
+    const craft=surfaceGeology.userData.ingenuity;
+    const f=ingenuityFlight;
+    f.time+=dt;f.elapsed+=dt;
+    const smooth=x=>{x=THREE.MathUtils.clamp(x,0,1);return x*x*(3-2*x);};
+    let altitude=0,x=0,z=0;
+    if(f.phase==='flight'){
+      altitude=10*smooth(f.time/4);
+      const travel=smooth((f.time-4)/10);
+      x=12*travel+2.3*Math.sin(Math.PI*travel);
+      z=-21*travel;
+      if(f.time>14){f.phase='landing';f.time=0;}
+    }else if(f.phase==='landing'){
+      const k=smooth(f.time/4.2);
+      altitude=Math.max(0,10*(1-k));
+      x=THREE.MathUtils.lerp(craft.position.x,0,k);
+      z=THREE.MathUtils.lerp(craft.position.z,0,k);
+      if(k>=1){f.phase='idle';f.time=0;syncIngenuityFlightUI();say(INGENUITY_FACTS[1],10);}
+    }
+    craft.position.set(x,Hf(x,z)+.075+altitude,z);
+    const speed=f.phase==='idle'?0:48;
+    const rotors=craft.userData.rotors||[];
+    if(rotors[0])rotors[0].rotation.y+=dt*speed;
+    if(rotors[1])rotors[1].rotation.y-=dt*speed;
+    if(craft.userData.dust){
+      const dust=craft.userData.dust;
+      const nearGround=1-THREE.MathUtils.smoothstep(altitude,0,2.5);
+      dust.material.opacity=(f.phase==='idle'?0:.18*nearGround*(.7+.3*Math.sin(t*13)**2));
+      dust.scale.setScalar(1+.25*Math.sin(t*7)**2);
+    }
+  }
+
+  function jezeroWaterGeometry(){
+    const group=new THREE.Group();group.name='Jezero ancient water (illustrative)';
+    const material=new THREE.MeshStandardMaterial({
+      color:0x162b38,roughness:.12,metalness:.85,transparent:true,opacity:.92,
+      side:THREE.DoubleSide,depthWrite:false
+    });
+    const disk=new THREE.Mesh(new THREE.CircleGeometry(173,128),material);
+    disk.rotation.x=-Math.PI/2;disk.position.set(JEZERO_CENTER.x,0,JEZERO_CENTER.z);
+    group.add(disk);
+    const ribbon=(inlet)=>{
+      const verts=[],indices=[],count=96;
+      for(let i=0;i<=count;i++){
+        const t=i/count;
+        const points=JEZERO_CHANNELS[inlet?0:1];
+        const fi=t*(points.length-1),j=Math.min(points.length-2,Math.floor(fi)),u=fi-j;
+        const x=THREE.MathUtils.lerp(points[j].x,points[j+1].x,u);
+        const z=THREE.MathUtils.lerp(points[j].z,points[j+1].z,u);
+        const next=Math.min(1,t+.002),fj=next*(points.length-1),jj=Math.min(points.length-2,Math.floor(fj)),uu=fj-jj;
+        const x2=THREE.MathUtils.lerp(points[jj].x,points[jj+1].x,uu);
+        const z2=THREE.MathUtils.lerp(points[jj].z,points[jj+1].z,uu);
+        const len=Math.hypot(x2-x,z2-z)||1,width=6+3*fbm5(t*3.1+5,8.1);
+        const nx=-(z2-z)/len,nz=(x2-x)/len;
+        verts.push(x+nx*width,0,z+nz*width,x-nx*width,0,z-nz*width);
+        if(i<count){const j=i*2;indices.push(j,j+1,j+2,j+1,j+3,j+2);}
+      }
+      const geo=new THREE.BufferGeometry();
+      geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));
+      geo.setIndex(indices);geo.computeVertexNormals();
+      return new THREE.Mesh(geo,material);
+    };
+    group.add(ribbon(true),ribbon(false));
+    group.visible=false;
+    surf.add(group);
+    return group;
+  }
+  function syncJezeroEraUI(){
+    const inJezero=mode==='surface'&&activeMarsSite==='perseverance'&&activeMissionRoute!=='ingenuity';
+    jezeroEraButton.hidden=!inJezero || activeMissionRoute==='ingenuity';
+    jezeroEraButton.textContent=jezeroAncient?'ERA: ANCIENT JEZERO (3.7 Ga)':'ERA: PRESENT DAY';
+    jezeroEraButton.setAttribute('aria-pressed',String(jezeroAncient));
+    if(jezeroWater){
+      if(!inJezero)jezeroWater.visible=false;
+      jezeroWaterTarget=inJezero&&jezeroAncient?JEZERO_WATER_LEVEL:-70;
+      if(inJezero&&jezeroAncient)jezeroWater.visible=true;
+    }
+    if(inJezero){
+      if(missionEquipment)missionEquipment.visible=!jezeroAncient;
+      if(surfaceGeology)surfaceGeology.visible=activeMissionRoute==='ingenuity'||!jezeroAncient;
+    }
+  }
+  jezeroEraButton.addEventListener('click',()=>{
+    if(mode!=='surface'||activeMarsSite!=='perseverance'||activeMissionRoute==='ingenuity')return;
+    jezeroAncient=!jezeroAncient;
+    syncJezeroEraUI();
+    say(jezeroAncient
+      ?'About 3.7 billion years ago, rivers may have fed a lake here. This is a scientific illustration, not a measured ancient water level.'
+      :'Present-day Jezero is dry. Perseverance studies its delta rocks for evidence of ancient environments.',12);
+  });
+  function animateJezeroWater(dt,t){
+    if(!jezeroWater)return;
+    if(activeMarsSite==='ingenuity'){jezeroWater.visible=false;return;}
+    jezeroWaterHeight=THREE.MathUtils.damp(jezeroWaterHeight,jezeroWaterTarget,2.4,dt);
+    jezeroWater.position.y=jezeroWaterHeight+.045*Math.sin(t*1.3);
+    // Ripples via subtle normal variation and a gentle sunlight shimmer.
+    const mat=jezeroWater.children[0].material;
+    mat.roughness=.12+.018*Math.sin(t*.85);
+    if(!jezeroAncient&&jezeroWaterHeight<-66)jezeroWater.visible=false;
+  }
   function prepareSurfaceSite(){
     if (surfacePreparedSite === activeMarsSite && surfacePreparedRoute === activeMissionRoute) return;
     applyMarsSurfaceSite();
@@ -1480,17 +1798,22 @@
     const m=MISSOES_MARTE[activeMarsSite]||MISSOES_MARTE.pathfinder;
     setRoutePhotoBackdrop(activeMissionRoute);
     surf.background.set(m.ceu);surf.fog.color.set(m.ceu);
+    if(activeMarsSite==='ingenuity'){surf.background.set('#c9a378');surf.fog.color.set('#c9a378');}
     // Preserve a textura procedural existente; use uma tonalização moderada.
     terrainMat.color.set(m.solo).lerp(new THREE.Color(0xffffff),.58);
-    if(missionDome){missionDome.material.uniforms.siteTint.value.set(m.ceu);}
+    if(activeMarsSite==='ingenuity')terrainMat.color.set('#b5834d').lerp(new THREE.Color('#8c5e32'),.24);
+    if(missionDome){missionDome.material.uniforms.siteTint.value.set(activeMarsSite==='ingenuity'?'#c9a378':m.ceu);}
     pathfinderEquipment.forEach(o=>o.visible=m.equip==='pathfinder');
     makeMissionEquipment();
+    missionEquipment.visible=activeMarsSite!=='ingenuity';
     relocateVolcanicRocks();
     if(bigRock)bigRock.visible=activeMarsSite==='pathfinder';
     for(const tile of terrainTiles){
       if(tile.userData.cx!==undefined)paintTerrainTile(tile,tile.userData.cx,tile.userData.cz);
     }
     buildSurfaceGeology();
+    if(surfaceGeology)surfaceGeology.visible=true;
+    if(activeMarsSite==='ingenuity'&&jezeroWater)jezeroWater.visible=false;
   }
   async function buildSurface() {
     const rnd = Math.random, o = rnd() * 90, sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
@@ -1516,6 +1839,7 @@
     // Luzes isoladas na cena da superfície. Sem PMREM de sol superexposto ou bloom.
     surf.add(new THREE.AmbientLight(0xffd8b8,0.5));
     surf.add(new THREE.HemisphereLight(0xffe4c4,0x8b4526,0.9));
+    jezeroWater=jezeroWaterGeometry();
     sunL=new THREE.DirectionalLight(0xfff2e0,1.2);
     sunL.position.set(40,60,30); sunL.castShadow=true;
     sunL.shadow.mapSize.set(512,512);
@@ -1580,15 +1904,18 @@
     doubleClickLanding = false;
     fly.dur = 2.4;
     const go = () => {
-      mode = 'surface'; freeFlight = false; $('surfaceFlyToggle').hidden=false; $('surfaceFlyToggle').textContent='ENABLE FLIGHT · F'; prepareSurfaceSite(); showSurfaceRoute();
-      if(activeMarsSite!=='pathfinder' && activeMarsSite!=='olympus'){surfaceRouteCaption.textContent=MISSOES_MARTE[activeMarsSite].nome.toUpperCase()+' / NASA-INSPIRED 3D GEOLOGY · ILLUSTRATIVE, NOT A NASA DEM';surfaceRouteCaption.style.display='block';} focus = null; fly.on = false; panel.classList.remove('open'); controls.enabled = false;  renderer.toneMappingExposure = 1.0;
+      mode = 'surface'; jezeroAncient=false; jezeroWaterHeight=-70; jezeroWaterTarget=-70; freeFlight = false; $('surfaceFlyToggle').hidden=false; $('surfaceFlyToggle').textContent='ENABLE FLIGHT · F'; prepareSurfaceSite(); showSurfaceRoute();
+      if(activeMarsSite!=='pathfinder' && activeMarsSite!=='olympus'){surfaceRouteCaption.textContent=(activeMarsSite==='ingenuity'?'WRIGHT BROTHERS FIELD / INGENUITY AERIAL EXPLORATION':MISSOES_MARTE[activeMarsSite].nome.toUpperCase())+' / NASA-INSPIRED 3D RECONSTRUCTION';surfaceRouteCaption.style.display='block';} focus = null; fly.on = false; panel.classList.remove('open'); controls.enabled = false;  renderer.toneMappingExposure = 1.0;
+      syncJezeroEraUI();
+      if(surfaceGeology)surfaceGeology.visible=true;
+      ingenuityFlight={phase:'idle',time:0,elapsed:0};syncIngenuityFlightUI();
       pp.x = activeMarsSite==='olympus' ? 520 : 0;
-      pp.z = activeMarsSite==='olympus' ? -508 : 10;
-      pp.y = Hf(pp.x,pp.z)+(activeMarsSite==='olympus'?1.8:2.2);
+      pp.z = activeMarsSite==='olympus' ? -508 : (activeMarsSite==='ingenuity'?4.5:10);
+      pp.y = Hf(pp.x,pp.z)+(activeMarsSite==='ingenuity'?1.6:(activeMarsSite==='olympus'?1.8:2.2));
       // Tiles já atualizados antes da animação de mergulho.
       yaw = 0;
-      pitch = activeMarsSite==='olympus' ? 0 : -Math.atan2(0.2, 10); surfCam.fov = 50; surfCam.updateProjectionMatrix(); $('hud').style.display = 'none'; $('hint').textContent = 'Press F to fly • WASD or arrow keys to move • Drag to look around';
-      rp.x = -0.82; rp.y = -0.55; nextWp = 0; nextTip = T + 14; tipI = 1; say(activeMarsSite==='olympus'?'You are on Olympus Mons, the largest known volcano in the Solar System, about 21.9 km high and 600 km wide. The beacon ahead is a simulation: no spacecraft has landed here. Explore the volcanic plateau and distant escarpments.':SURF_TIPS[0], 16);
+      pitch = activeMarsSite==='ingenuity' ? -.055 : (activeMarsSite==='olympus' ? 0 : -Math.atan2(0.2, 10)); surfCam.fov = 50; surfCam.updateProjectionMatrix(); $('hud').style.display = 'none'; $('hint').textContent = 'Press F to fly • WASD or arrow keys to move • Drag to look around';
+      rp.x = -0.82; rp.y = -0.55; nextWp = 0; nextTip = T + 14; tipI = 1; say(activeMarsSite==='olympus'?'You are on Olympus Mons, the largest known volcano in the Solar System, about 21.9 km high and 600 km wide. The beacon ahead is a simulation: no spacecraft has landed here. Explore the volcanic plateau and distant escarpments.':(isIngenuityScene()?INGENUITY_FACTS[0]:SURF_TIPS[0]), 16);
     };
     if (surfReady) return go();
     // Reserva para entrada direta: preparar sem tela de carregamento.
@@ -1598,6 +1925,9 @@
   function exitSurface() {
     autoLanding = false; doubleClickLanding = false;
     fly.dur = 2.4;
+    jezeroAncient=false;jezeroWaterTarget=-70;jezeroEraButton.hidden=true;ingenuityFlightButton.hidden=true;ingenuityFlight.phase='idle';
+    if(surfaceGeology)surfaceGeology.visible=true;
+    if(missionEquipment)missionEquipment.visible=true;
     mode = 'space'; $('surfaceFlyToggle').hidden=true; siteCard.style.display='none'; surfaceRouteCaption.style.display='none'; renderer.toneMappingExposure = 1; for (const k in keys) keys[k] = false; $('hud').style.display = ''; $('hint').textContent = 'Drag to rotate · Scroll to zoom · Click Mars';
     SITES.forEach(s => s.g.visible = false); markerK = 0; dive = null; atmosphereFade.style.opacity = '0'; fly.on = false; camera.position.copy(orbitHome); camera.fov=50; camera.updateProjectionMatrix(); camera.lookAt(mars.position); controls.target.copy(mars.position); controls.enabled = true; controls.update(); tipI = 0; nextTip = T + 14; say('Back in orbit! Click Mars to explore again.', 8);
   }
@@ -1618,6 +1948,23 @@
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime(), dt = Math.min(0.033, Math.max(0, t - lastT)), W = innerWidth, H = innerHeight; lastT = t; T = t; const SURF = mode === 'surface', cam = SURF ? surfCam : camera;
     if (rig.parent !== cam) { cam.add(rig); rig.position.set(-1.28,-0.86,-3.25); }
+    // Keep the assistant out of the way whenever the user opens the route/data panel.
+    // Animate only the camera-attached robot rig; no new WebGL scene or renderer.
+    const routePanelOpen = !document.getElementById('sectionPanel').hidden;
+    const detailPanelOpen = document.getElementById('panel').classList.contains('open');
+    const robotAside = routePanelOpen || detailPanelOpen;
+    const desiredRobotX = robotAside ? 1.45 : -1.28;
+    rig.position.x = THREE.MathUtils.damp(rig.position.x, desiredRobotX, 4.8, dt);
+    rig.position.y = THREE.MathUtils.damp(rig.position.y, -.86, 4.8, dt);
+    // The speech bubble follows the same side of the viewport, above the robot.
+    // It stays away from the panel and remains legible on smaller screens.
+    const bubbleWidth = bubble.offsetWidth || Math.min(270, W-88);
+    const desiredBubbleX = robotAside ? Math.max(12, W-bubbleWidth-12) : 12;
+    if (!window.__robotBubbleX) window.__robotBubbleX=desiredBubbleX;
+    window.__robotBubbleX=THREE.MathUtils.damp(window.__robotBubbleX,desiredBubbleX,5.5,dt);
+    bubble.style.left=Math.round(window.__robotBubbleX)+'px';
+    bubble.style.bottom='82px';
+    bubble.style.setProperty('--tx',robotAside?'calc(100% - 28px)':'28px');
     if (shownMode !== mode) { shownMode = mode; acts.hidden = false; surfBtn.hidden = mode !== 'space'; backBtn.hidden = mode === 'space'; backBtn.textContent = mode === 'site' ? '↩ Back to map' : '↩ Return to space'; }
     missionHud.hidden = (mode === 'surface');if(mode==='surface'){
       mini.style.display='none'; acts.hidden=false;backBtn.hidden=false;backBtn.textContent='↩ Return to space';acts.style.zIndex='110';
@@ -1664,7 +2011,9 @@
     camFl.set(Math.sin(t * 0.31) * a, Math.sin(t * 0.43 + 1) * a * 0.8, Math.sin(t * 0.23) * a * 0.5); if (!dive) { camera.position.add(camFl); camera.rotateZ(Math.sin(t * 0.27) * 0.006); }
     } else {
       surfStep(t, dt);
-      if(surfaceGeology && surfaceGeology.userData.ingenuity){const rotor=surfaceGeology.userData.ingenuity.userData.rotorHub;if(rotor)rotor.rotation.y+=dt*18;}
+      animateJezeroWater(dt,t);
+      updateIngenuityFlight(dt,t);
+      if(isIngenuityScene()&&t>nextTip){say(INGENUITY_FACTS[tipI++%INGENUITY_FACTS.length],11);nextTip=t+17;}
     }
 
     // Robô fixo no canto inferior esquerdo: apenas microanimações, sem atravessar informações.

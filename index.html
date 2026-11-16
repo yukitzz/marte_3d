@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="An interactive 3D Mars exploration experience with geographic markers based on NASA Mars Trek map references.">
   <title>Mars Explorer 3D</title>
-  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -52,6 +52,8 @@
 <a id="nasaTrekCredit" href="https://trek.nasa.gov/mars/" target="_blank" rel="noopener noreferrer">NASA MARS TREK · MAP DATA</a>
 <div id="missionMini"><button id="missionMiniClose" aria-label="Close">×</button><h3 id="missionMiniTitle"></h3><p id="missionMiniText"></p><div class="miniActions"><button id="missionMiniLand">Dive to surface</button><button id="missionMiniMore">Mission details</button></div></div>
 <div id="surfaceRouteCaption"></div>
+<button id="ingenuityFlightToggle" type="button" hidden>START TEST FLIGHT</button>
+<button id="jezeroEraToggle" type="button" hidden aria-pressed="false">ERA: PRESENT DAY</button>
 <button id="surfaceFlyToggle" type="button" hidden style="position:fixed;right:18px;bottom:74px;z-index:30;background:rgba(10,17,24,.85);border:1px solid rgba(225,210,185,.48);border-radius:5px;color:#f1e7da;padding:10px 14px;font:600 12px system-ui;cursor:pointer">ENABLE FLIGHT · F</button>
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
@@ -63,6 +65,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+  
   <script src="script.js"></script>
 </body>
 </html>
