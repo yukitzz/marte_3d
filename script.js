@@ -1998,15 +1998,24 @@
     const desiredRobotX = robotAside ? 1.45 : -1.28;
     rig.position.x = THREE.MathUtils.damp(rig.position.x, desiredRobotX, 4.8, dt);
     rig.position.y = THREE.MathUtils.damp(rig.position.y, -.86, 4.8, dt);
-    // The speech bubble follows the same side of the viewport, above the robot.
-    // It stays away from the panel and remains legible on smaller screens.
-    const bubbleWidth = bubble.offsetWidth || Math.min(270, W-88);
-    const desiredBubbleX = robotAside ? Math.max(12, W-bubbleWidth-12) : 12;
-    if (!window.__robotBubbleX) window.__robotBubbleX=desiredBubbleX;
-    window.__robotBubbleX=THREE.MathUtils.damp(window.__robotBubbleX,desiredBubbleX,5.5,dt);
-    bubble.style.left=Math.round(window.__robotBubbleX)+'px';
-    bubble.style.bottom='82px';
-    bubble.style.setProperty('--tx',robotAside?'calc(100% - 28px)':'28px');
+    // Keep the speech bubble directly above the robot, tracking its projected screen position.
+    // This changes only the tooltip placement; the robot, camera and scene remain untouched.
+    const bubbleWidth = bubble.offsetWidth || Math.min(270, W-24);
+    const bubbleAnchor = new THREE.Vector3();
+    rig.getWorldPosition(bubbleAnchor);
+    bubbleAnchor.y += 1.65;
+    bubbleAnchor.project(cam);
+    const robotScreenX = (bubbleAnchor.x * 0.5 + 0.5) * W;
+    const robotScreenY = (-bubbleAnchor.y * 0.5 + 0.5) * H;
+    const desiredBubbleX = THREE.MathUtils.clamp(robotScreenX - bubbleWidth * 0.5, 12, Math.max(12, W - bubbleWidth - 12));
+    const desiredBubbleBottom = THREE.MathUtils.clamp(H - robotScreenY + 14, 12, H - 90);
+    if (!Number.isFinite(window.__robotBubbleX)) window.__robotBubbleX = desiredBubbleX;
+    if (!Number.isFinite(window.__robotBubbleBottom)) window.__robotBubbleBottom = desiredBubbleBottom;
+    window.__robotBubbleX = THREE.MathUtils.damp(window.__robotBubbleX, desiredBubbleX, 7, dt);
+    window.__robotBubbleBottom = THREE.MathUtils.damp(window.__robotBubbleBottom, desiredBubbleBottom, 7, dt);
+    bubble.style.left = Math.round(window.__robotBubbleX) + 'px';
+    bubble.style.bottom = Math.round(window.__robotBubbleBottom) + 'px';
+    bubble.style.setProperty('--tx', THREE.MathUtils.clamp(robotScreenX - window.__robotBubbleX, 18, bubbleWidth - 18) + 'px');
     if (shownMode !== mode) { shownMode = mode; acts.hidden = false; surfBtn.hidden = mode !== 'space'; backBtn.hidden = mode === 'space'; backBtn.textContent = mode === 'site' ? '↩ Back to map' : '↩ Return to space'; }
     missionHud.hidden = (mode === 'surface');if(mode==='surface'){
       mini.style.display='none'; acts.hidden=false;backBtn.hidden=false;backBtn.textContent='↩ Return to space';acts.style.zIndex='110';
