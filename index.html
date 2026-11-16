@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
- 
 
 <nav id="mainNav" aria-label="Main navigation">
   <a class="brand" href="#" data-view="map" aria-label="Mars Explorer home"><span class="brandMark">M</span><span>MARS EXPLORER</span></a>
@@ -45,12 +44,10 @@
   <section id="missionDetails" hidden>
     <div class="missionTag" id="missionTag"></div><h3 id="missionName"></h3><div class="missionText" id="missionSummary"></div>
     <dl id="missionMetrics"></dl><ul id="missionMilestones"></ul>
-    <div class="missionActions"><button id="missionLand">Land at this location</button><button id="missionPhoto">Load NASA panorama</button></div>
+    <div class="missionActions"><button id="missionLand">Land at this location</button></div>
     <p class="missionCaveat" id="missionCaveat"></p><a id="missionSource" href="#" target="_blank" rel="noopener noreferrer">NASA science source</a>
   </section>
 </aside>
-<input id="missionPanoramaFile" type="file" accept="image/*" hidden>
-<div id="missionPanorama"><button id="missionPanoramaClose">Close panorama</button><div class="panoramaNote">User-selected panoramic image · photographic view, not 3D geometry.</div></div>
 <div id="marsRouteLabels"></div>
 <a id="nasaTrekCredit" href="https://trek.nasa.gov/mars/" target="_blank" rel="noopener noreferrer">NASA MARS TREK · MAP DATA</a>
 <div id="missionMini"><button id="missionMiniClose" aria-label="Close">×</button><h3 id="missionMiniTitle"></h3><p id="missionMiniText"></p><div class="miniActions"><button id="missionMiniLand">Dive to surface</button><button id="missionMiniMore">Mission details</button></div></div>

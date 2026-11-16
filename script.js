@@ -384,21 +384,16 @@
   // HUD do assistente compartilhado entre espaço e superfície; nunca integra a cena 3D.
   const robotHud=document.createElement('div');
   robotHud.id='robot-hud';
-  Object.assign(robotHud.style,{position:'fixed',left:'10px',top:'auto',bottom:'10px',width:'56px',height:'64px',display:'block',zIndex:'12',pointerEvents:'auto',touchAction:'none',cursor:'grab',background:'transparent',userSelect:'none'});
-  robotHud.title='Arraste somente para os lados para mover o robô';
-  robotHud.setAttribute('aria-label','Arraste para os lados para mover o robô');
+  Object.assign(robotHud.style,{position:'fixed',left:'10px',top:'auto',bottom:'10px',width:'56px',height:'64px',display:'block',zIndex:'12',pointerEvents:'none',touchAction:'none',cursor:'default',background:'transparent',userSelect:'none'});
+  robotHud.title='Assistente fixo';
+  robotHud.setAttribute('aria-label','Robô assistente em posição fixa');
   document.body.appendChild(robotHud);
   // O robô usa o renderizador principal: elimina um segundo contexto WebGL, que podia causar falhas de vídeo.
   camera.add(rig);
   rig.position.set(-1.28,-0.86,-3.25);
   rig.scale.setScalar(1.0);
-  let robotDrag=null;
-  const placeRobotFromScreen=(cx)=>{const depth=3.25, halfH=Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*depth, halfW=halfH*camera.aspect;rig.position.x=((cx/innerWidth)*2-1)*halfW;rig.position.y=-0.86;rig.position.z=-depth;};
-  robotHud.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();robotDrag={x:e.clientX,left:robotHud.offsetLeft};robotHud.style.cursor='grabbing';robotHud.setPointerCapture(e.pointerId);});
-  robotHud.addEventListener('pointermove',e=>{if(!robotDrag)return;e.preventDefault();const left=Math.max(0,Math.min(innerWidth-robotHud.offsetWidth,robotDrag.left+e.clientX-robotDrag.x));robotHud.style.left=left+'px';placeRobotFromScreen(left+robotHud.offsetWidth/2);});
-  placeRobotFromScreen(38);
-  const stopRobotDrag=()=>{robotDrag=null;robotHud.style.cursor='grab';};
-  robotHud.addEventListener('pointerup',stopRobotDrag);robotHud.addEventListener('pointercancel',stopRobotDrag);
+  // Posição fixa no enquadramento: o robô acompanha a câmera, nunca a cena ou o ponteiro.
+  rig.position.set(-1.28,-0.86,-3.25);
   // ---------- Controles ----------
   controls = new THREE.OrbitControls(camera, canvas);
   Object.assign(controls, { enableDamping: true, dampingFactor: 0.07, enablePan: false, minDistance: 2.8, maxDistance: 40, rotateSpeed: 0.6, zoomSpeed: 0.7 });
@@ -406,7 +401,7 @@
   // Transição atmosférica independente da geometria e do HUD.
   const atmosphereFade = document.createElement('div');
   atmosphereFade.id = 'atmosphere-transition';
-  Object.assign(atmosphereFade.style, {position:'fixed',inset:'0',pointerEvents:'none',zIndex:'999',opacity:'0',background:'radial-gradient(ellipse at center, rgba(238,116,49,.48), rgba(133,49,24,.88))',transition:'opacity 160ms ease'});
+  Object.assign(atmosphereFade.style, {position:'fixed',inset:'0',pointerEvents:'none',zIndex:'999',opacity:'0',background:'radial-gradient(ellipse at center, rgba(238,116,49,.48), rgba(133,49,24,.88))',transition:'opacity 520ms cubic-bezier(.22,.61,.36,1)'});
   document.body.appendChild(atmosphereFade);
   const orbitHome = camera.position.clone();
   const MARS_RADIUS = 2;
@@ -439,7 +434,7 @@
           const worldNormal = surfacePoint.clone().sub(mars.position).normalize();
           dive = {
             started: performance.now(),
-            duration: 850,
+            duration: 1450,
             from: camera.position.clone(),
             to: surfacePoint.clone().add(worldNormal.multiplyScalar(0.045)),
             lookAt: surfacePoint.clone()
@@ -688,30 +683,19 @@
       const title=document.createElement('div');title.style.cssText='font-size:17px;font-weight:700;letter-spacing:.3px';title.textContent=m.nome;
       const detail=document.createElement('div');detail.style.cssText='color:#b8c5cf;margin:7px 0 10px';detail.textContent=m.local+' · '+m.lat.toFixed(3)+'°, '+m.lon.toFixed(3)+'° · '+m.pouso;
       const body=document.createElement('p');body.style.margin='0 0 12px';body.textContent=m.desc;
-      let olympusPhoto=null;
-      if(id==='olympus'){
-        olympusPhoto=document.createElement('figure');olympusPhoto.style.cssText='margin:10px 0 12px';
-        const pic=document.createElement('img');pic.src=FOTO_MONTE_OLYMPUS;pic.alt='User-provided Olympus Mons reference image';pic.style.cssText='width:100%;height:auto;max-height:180px;object-fit:cover;border-radius:5px;border:1px solid rgba(220,230,230,.2)';
-        const caption=document.createElement('figcaption');caption.textContent='Olympus Mons — imagem de referência';caption.style.cssText='font-size:10px;color:#b8c5cf;margin-top:4px';
-        olympusPhoto.append(pic,caption);
-      }
       const row=document.createElement('div');row.style.cssText='display:flex;gap:8px;flex-wrap:wrap';
       const land=document.createElement('button');land.textContent='Land at this location';land.style.cssText='background:#d4a57d;color:#15191c;border:0;border-radius:4px;padding:9px 12px;cursor:pointer;font-weight:700';land.onclick=()=>{siteCard.style.display='none';if(fly.on){fly.on=false;controls.enabled=true;}mode='space';beginDive();};
       const src=document.createElement('a');src.textContent='NASA source';src.href=m.fonte;src.target='_blank';src.rel='noopener noreferrer';src.style.cssText='color:#a8d9e6;align-self:center';
       const close=document.createElement('button');close.textContent='×';close.style.cssText='position:absolute;top:5px;right:9px;background:transparent;border:0;color:white;font-size:22px;cursor:pointer';close.onclick=()=>siteCard.style.display='none';
-      row.append(land,src);siteCard.append(title,detail);if(olympusPhoto)siteCard.append(olympusPhoto);siteCard.append(body,row,close);siteCard.style.display='block';
+      row.append(land,src);siteCard.append(title,detail,body,row,close);siteCard.style.display='block';
       if(typeof say==='function')say(m.nome+': '+m.desc,11);
     }
   }
 
   const mini=$('missionMini');let miniMarker=null;
   const miniActions=mini.querySelector('.miniActions');
-  const miniFigure=document.createElement('figure');miniFigure.className='regionPhoto';miniFigure.hidden=true;
-  const miniImage=document.createElement('img');miniImage.alt='NASA orbital image of the selected Martian region';miniImage.loading='lazy';
-  const miniCaption=document.createElement('figcaption');miniFigure.append(miniImage,miniCaption);
   const miniFact=document.createElement('p');miniFact.className='regionFact';miniFact.hidden=true;
-  const miniCredit=document.createElement('a');miniCredit.className='regionCredit';miniCredit.target='_blank';miniCredit.rel='noopener noreferrer';miniCredit.textContent='View image and NASA/JPL caption';
-  mini.insertBefore(miniFigure,miniActions);mini.insertBefore(miniFact,miniActions);mini.insertBefore(miniCredit,miniActions);
+  mini.insertBefore(miniFact,miniActions);
   function openMissionMini(marker,x,y){
     miniMarker=marker;
     const mission=MISSION_ROUTES.find(m=>m.id===marker.routeId);
@@ -720,16 +704,7 @@
     $('missionMiniText').textContent=feature
       ? feature.description+' Map layer: '+feature.layer+(feature.bbox?' · Map coverage: '+feature.bbox:'')
       : (mission?mission.summary:'')+(marker.orbital?' · Representative orbit, not live telemetry.':' · Mars surface location marker.');
-    miniFigure.hidden=!feature?.image;
     miniFact.hidden=!feature?.fact;
-    miniCredit.hidden=!feature?.imageSource;
-    if(feature?.image){
-      miniImage.src=feature.image;
-      miniImage.alt='NASA/JPL image illustrating '+feature.label;
-      miniCaption.textContent=(feature.imageCredit||'NASA/JPL')+' · '+feature.image.split('/').pop().replace('.jpg','');
-      miniCredit.href=feature.imageSource;
-      miniImage.onerror=()=>{miniFigure.hidden=true;};
-    }
     miniFact.textContent=feature?.fact||'';
     $('missionMiniLand').hidden=!!feature || !!marker.orbital;
     $('missionMiniMore').textContent=feature?'Open NASA Mars Trek':'Mission details';
@@ -791,7 +766,7 @@
   }
 
   const missionHud=$('missionHud'),missionList=$('missionList'),missionDetails=$('missionDetails');
-  let selectedMission=null,missionPanoramaURL=null;
+  let selectedMission=null;
   function fmtMission(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
   function missionFocus(lat,lon){
     fly.dur=0.85;
@@ -827,13 +802,6 @@
     if(fly.on){fly.on=false;controls.enabled=true;controls.update();}
     mode='space';beginDive();
   };
-  $('missionPhoto').onclick=()=>{$('missionPanoramaFile').click();};
-  $('missionPanoramaFile').onchange=e=>{
-    const f=e.target.files[0];if(!f)return;
-    if(missionPanoramaURL)URL.revokeObjectURL(missionPanoramaURL);
-    missionPanoramaURL=URL.createObjectURL(f);$('missionPanorama').style.backgroundImage='url("'+missionPanoramaURL+'")';$('missionPanorama').classList.add('active');e.target.value='';
-  };
-  $('missionPanoramaClose').onclick=()=>$('missionPanorama').classList.remove('active');
   // Visível apenas em órbita: não interfere na câmera nem nos controles da superfície.
   missionHud.hidden=false;
 
@@ -1648,7 +1616,7 @@
   let lastT = 0, frame = 0, renderFrame = 0, nextWp = 5, curWp = WPS[0], tiltX = 0, tiltZ = 0, nextTip = 14, tipI = 0;
   function animate() {
     requestAnimationFrame(animate);
-    const t = clock.getElapsedTime(), dt = Math.min(0.05, t - lastT), W = innerWidth, H = innerHeight; lastT = t; T = t; const SURF = mode === 'surface', cam = SURF ? surfCam : camera;
+    const t = clock.getElapsedTime(), dt = Math.min(0.033, Math.max(0, t - lastT)), W = innerWidth, H = innerHeight; lastT = t; T = t; const SURF = mode === 'surface', cam = SURF ? surfCam : camera;
     if (rig.parent !== cam) { cam.add(rig); rig.position.set(-1.28,-0.86,-3.25); }
     if (shownMode !== mode) { shownMode = mode; acts.hidden = false; surfBtn.hidden = mode !== 'space'; backBtn.hidden = mode === 'space'; backBtn.textContent = mode === 'site' ? '↩ Back to map' : '↩ Return to space'; }
     missionHud.hidden = (mode === 'surface');if(mode==='surface'){
@@ -1659,7 +1627,7 @@
     planets.forEach(p => { const a = p.a0 + p.amp * Math.sin(t * p.w + p.ph); p.g.position.set(SUN.x + p.r * Math.cos(a), SUN.y + p.y0 + p.r * 0.04 * Math.sin(a), SUN.z + p.r * Math.sin(a)); p.m.rotation.y += p.spin; });
     moons.forEach(o => { const a = t * o.w + o.ph; o.m.position.set(o.r * Math.cos(a), o.r * Math.sin(a) * Math.sin(o.inc), o.r * Math.sin(a) * Math.cos(o.inc)); o.m.rotation.y += 0.01; }); camera.position.sub(camFl);
     if (mars) {
-      if (mode !== 'site' && !fly.on && !pointerOverSpace) mars.rotation.y += 0.0005;
+      if (mode !== 'site' && !fly.on && !pointerOverSpace) mars.rotation.y += dt * 0.03;
       if (pulse > 0) { pulse = Math.max(0, pulse - 0.04); mars.scale.setScalar(1 + Math.sin(pulse * Math.PI) * 0.03); }
       if (mode !== 'space') markerK = Math.min(1, markerK + dt * 1.6);
       const mk = Math.max(0.001, markerK * markerK * (3 - 2 * markerK));
@@ -1675,12 +1643,14 @@
       const progress = Math.min(1, (performance.now() - dive.started) / (dive.duration || 1450));
       // Zoom cinematográfico direto: acelera no início e desacelera suavemente
       // ao chegar exatamente na região da rota escolhida.
-      const eased = 1 - Math.pow(1 - progress, 1.7);
-      camera.position.copy(dive.from).lerp(dive.to, eased);
-      camera.fov = 50 - 5 * eased; camera.updateProjectionMatrix();
+      const eased = progress * progress * (3 - 2 * progress);
+      const cinematic = eased * eased * (3 - 2 * eased);
+      camera.position.copy(dive.from).lerp(dive.to, cinematic);
+      camera.fov = 50 - 5 * cinematic; camera.updateProjectionMatrix();
       camera.lookAt(dive.lookAt || mars.position);
       // Um breve véu atmosférico esconde apenas o corte para a câmera em primeira pessoa.
-      const handoff = Math.max(0, Math.min(1, (progress - .88) / .12));
+      const handoffRaw = Math.max(0, Math.min(1, (progress - .82) / .18));
+      const handoff = handoffRaw * handoffRaw * (3 - 2 * handoffRaw);
       atmosphereFade.style.opacity = String(handoff * (lowGPU ? .35 : .55));
       if (progress >= 1) {
         camera.fov = 50; camera.updateProjectionMatrix(); dive = null;
@@ -1702,10 +1672,11 @@
     const vx = 0, vy = 0;
     rig.position.y=-0.86; rig.position.z=-3.25; rig.scale.setScalar(1.0);
     key.distance = fill.distance = 5 * k; tipLight.distance = 1.4 * k;
-    tiltZ += (0 - tiltZ) * 0.08; tiltX += (0 - tiltX) * 0.08;
+    const settle = 1 - Math.exp(-dt * 8); tiltZ += (0 - tiltZ) * settle; tiltX += (0 - tiltX) * settle;
     robot.position.set(0, Math.sin(t * 0.8) * 0.012, 0);
     robot.rotation.set(Math.sin(t * 0.45) * 0.012, Math.sin(t * 0.35) * 0.025, 0);
-    head.rotation.y += (mx * 0.6 - head.rotation.y) * 0.08; head.rotation.x += (-my * 0.3 - head.rotation.x) * 0.08;
+    const headEase = 1 - Math.exp(-dt * 9);
+    head.rotation.y += (mx * 0.6 - head.rotation.y) * headEase; head.rotation.x += (-my * 0.3 - head.rotation.x) * headEase;
     arms[0].rotation.z = -0.3; arms[1].rotation.z = 2.4 + Math.sin(t * 5) * 0.25;
     const bl = 0.6 + 0.4 * Math.sin(t * 4); tipLight.intensity = 0.6 + 1.2 * bl; tip.scale.setScalar(0.8 + 0.4 * bl);
     flames.forEach((f, i) => { f.scale.y = 0.85 + 0.15 * Math.sin(t * 9 + i * 2); f.userData.g.material.opacity = 0.65 + 0.25 * Math.sin(t * 7 + i); });
@@ -1756,12 +1727,11 @@
         <div class="infoCard"><h3>Hydrated minerals</h3><p>Clay-bearing and sulfate-rich deposits record interactions between rocks and water. They are valuable science targets and may help identify ancient habitable environments.</p></div>
         <div class="notice">Resource indicators are scientific prospects, not confirmed mineable reserves. Accessibility, depth, purity, extraction energy, and environmental constraints must be measured at each site.</div>`;
     }else if(view==='locations'){
-      body=`<div class="sectionEyebrow">NASA Trek reference regions</div><div class="locationGrid">`+
+      body=`<div class="sectionEyebrow">NASA Trek reference regions · 3D only</div><div class="locationGrid">`+
         NASA_TREK_FEATURES.map(f=>`<button class="locationCard" type="button" data-location-open="${f.id}">
-          <img src="${f.image||''}" alt="NASA image of ${f.label}" loading="lazy">
           <span class="locationInfo"><strong>${f.label}</strong><small>${f.fact||f.description}</small></span>
         </button>`).join('')+
-        `</div><div class="notice">Images are loaded from NASA/JPL public image records. Select a card to focus the globe; select the map marker for the full region information.</div>`;
+        `</div><div class="notice">Select a region to focus the 3D globe. No detached photos or flat panorama overlays are used in this view.</div>`;
     }
     sectionContent.innerHTML=`<div class="sectionEyebrow">Mars explorer / field guide</div><h2>${title}</h2><p class="sectionLead">${lead}</p>${body}`;
     sectionPanel.hidden=false;
@@ -1782,7 +1752,6 @@
         if(innerWidth<=640){mainNav.classList.remove('menuOpen');navMenuToggle.setAttribute('aria-expanded','false');}
       });
     });
-    sectionContent.querySelectorAll('.locationCard img').forEach(img=>img.addEventListener('error',()=>{img.style.visibility='hidden';}));
   }
   mainNav.querySelectorAll('[data-view]').forEach(button=>{
     button.addEventListener('click',()=>{
