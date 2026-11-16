@@ -528,8 +528,8 @@
   };
   // ---------- Painel científico das missões (dados históricos, não telemetria ao vivo) ----------
   const MISSION_ROUTES = [
-    {id:'jezero',title:'01 / Aerial exploration (Ingenuity helicopter)',name:'Ingenuity · Aerial exploration',lat:18.4447,lon:77.4508,elevation:'Local elevation not displayed (no DEM/MOLA data in this project)',status:'Surface exploration',summary:'Perseverance landed in Jezero, an ancient lake basin with delta sediment deposits. This marker shows the landing site, not the rover current position.',metrics:[['Latitude','18.4447° N'],['Longitude','77.4508° E'],['Landing','February 18, 2021'],['Crater','about 45 km across']],milestones:['Landing on the crater floor (2021)','Investigation of ancient delta sedimentary rocks','Collection and caching of rock samples'],fact:'Perseverance landed in Jezero in 2021 to investigate rocks and possible signs of ancient microbial life.',source:'https://science.nasa.gov/mission/mars-2020-perseverance/',note:'Coordinates identify the landing site, not the rover current position.'},
-    {id:'ingenuity',title:'02 / Jezero Crater (Perseverance rover)',name:'Perseverance · Jezero Crater',lat:18.44486,lon:77.45102,elevation:'Maximum flight altitude: 24 m above the surface',status:'Mission ended · January 2024',summary:'The first aircraft to achieve powered, controlled flight on another planet. The marker identifies its Jezero operations area, not a complete GPS route.',metrics:[['Latitude','18.4449° N (reference)'],['Longitude','77.4510° E (reference)'],['Flights','72'],['Distance','more than 17 km total'],['First flight','April 19, 2021'],['Final flight','January 18, 2024']],milestones:['First powered, controlled flight on Mars','Terrain scouting for Perseverance','Flight 72: rotor blade damage and mission conclusion'],fact:'Ingenuity completed 72 flights and traveled more than 17 km before its mission ended in 2024.',source:'https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/',note:'Reference coordinates for the operations area; detailed flight tracks have not been imported.'},
+    {id:'jezero',title:'01 / Jezero Crater (Perseverance rover)',name:'Perseverance · Jezero Crater',lat:18.4447,lon:77.4508,elevation:'Local elevation not displayed (no DEM/MOLA data in this project)',status:'Surface exploration',summary:'Perseverance landed in Jezero, an ancient lake basin with delta sediment deposits. This marker shows the landing site, not the rover current position.',metrics:[['Latitude','18.4447° N'],['Longitude','77.4508° E'],['Landing','February 18, 2021'],['Crater','about 45 km across']],milestones:['Landing on the crater floor (2021)','Investigation of ancient delta sedimentary rocks','Collection and caching of rock samples'],fact:'Perseverance landed in Jezero in 2021 to investigate rocks and possible signs of ancient microbial life.',source:'https://science.nasa.gov/mission/mars-2020-perseverance/',note:'Coordinates identify the landing site, not the rover current position.'},
+    {id:'ingenuity',title:'02 / Aerial exploration (Ingenuity helicopter)',name:'Ingenuity · Aerial exploration',lat:18.44486,lon:77.45102,elevation:'Maximum flight altitude: 24 m above the surface',status:'Mission ended · January 2024',summary:'The first aircraft to achieve powered, controlled flight on another planet. The marker identifies its Jezero operations area, not a complete GPS route.',metrics:[['Latitude','18.4449° N (reference)'],['Longitude','77.4510° E (reference)'],['Flights','72'],['Distance','more than 17 km total'],['First flight','April 19, 2021'],['Final flight','January 18, 2024']],milestones:['First powered, controlled flight on Mars','Terrain scouting for Perseverance','Flight 72: rotor blade damage and mission conclusion'],fact:'Ingenuity completed 72 flights and traveled more than 17 km before its mission ended in 2024.',source:'https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/',note:'Reference coordinates for the operations area; detailed flight tracks have not been imported.'},
     {id:'escapade',title:'03 / ESCAPADE twin spacecraft',name:'ESCAPADE · Blue and Gold',lat:0,lon:0,elevation:'Orbital altitude: not available',status:'Interplanetary cruise · arrival expected September 2027',summary:'The two spacecraft will study the solar wind, Mars hybrid magnetosphere, and atmospheric escape. ESCAPADE is an orbital mission and has no landing site.',metrics:[['Spacecraft','2 orbiters'],['Launch','November 13, 2025'],['Earth flyby','November 2026'],['Expected arrival','September 2027'],['Science phase','planned from 2028']],milestones:['Powered Earth flybys completed in November 2026','Mars orbit insertion planned for September 2027','Dual-spacecraft science orbits are still upcoming'],fact:'ESCAPADE is still in transit; both spacecraft are expected to reach Mars in September 2027.',source:'https://science.nasa.gov/science-research/heliophysics/nasas-escapade-completes-powered-earth-flybys-now-en-route-to-mars/',note:'The globe marker is only a visual reference; ESCAPADE has no Mars landing coordinates or live Mars-orbit telemetry.',orbital:true},
     {id:'history',title:'04 / Historic Mars landing sites',name:'Historic Mars landing sites',lat:19.13,lon:-33.22,elevation:'Local elevations not imported',status:'Mission archive · 1976–2021',summary:'Historic landing sites for spacecraft and rovers. The globe initially centers on Pathfinder, whose surface scene is available in this project.',metrics:[['Viking 1','22.269° N · 47.951°W'],['Viking 2','47.668° N · 134.280° E'],['Pathfinder','19.13° N · 33.22°W'],['Spirit','14.568° S · 175.473° E'],['Opportunity','1.95° S · 5.53° E'],['Curiosity','4.5895° S · 137.4417° E'],['InSight','4.502° N · 135.623° E'],['Perseverance','18.4447° N · 77.4508° E']],milestones:['Viking 1 and Viking 2 (1976)','Pathfinder and Sojourner (1997)','Spirit and Opportunity (2004)','Curiosity (2012), InSight (2018), Perseverance (2021)'],fact:'Pathfinder landed in Ares Vallis in 1997 and carried the small Sojourner rover.',source:'https://ode.rsl.wustl.edu/mars/pagehelp/Content/Missions_Instruments/Landing_Sites.htm',note:'Historical landing coordinates, not complete rover traverse tracks.'}
   ];
@@ -1021,15 +1021,26 @@
     const r=Math.hypot(dx*.97,dz*1.04)+warp;
     const inside=1-THREE.MathUtils.smoothstep(r,152,226);
     const rim=Math.exp(-Math.pow((r-234)/45,2));
-    const eroded=fbm5(x*.008+8,z*.008-6)*3.3+fbm5(x*.027,z*.027)*.9;
+    // Multi-scale, domain-warped erosion: broad sediment structure plus fine
+    // fractured textures. This is a stylized reconstruction, not a measured DEM.
+    const erosionWarpX=fbm5(x*.006+8,z*.006-6)*8;
+    const erosionWarpZ=fbm5(x*.006-13,z*.006+4)*8;
+    const ex=x+erosionWarpX, ez=z+erosionWarpZ;
+    const eroded=
+      fbm5(ex*.008,z*.008-6)*3.3+
+      fbm5(ex*.019+23,ez*.019-17)*1.45+
+      fbm5(ex*.047-9,ez*.047+12)*.48+
+      Math.pow(Math.abs(fbm5(ex*.012+4,ez*.012-8)),1.7)*1.1;
     const deltaAngle=Math.atan2(dz,dx);
-    const fan=Math.max(0,1-Math.abs(deltaAngle+2.48)/.58);
-    const delta=inside*fan*(2.8+fbm5(x*.018+11,z*.018)*1.3);
+    const fanAxis=-2.48+fbm5(x*.003,z*.003)*.11;
+    const fan=Math.max(0,1-Math.abs(deltaAngle-fanAxis)/.68);
+    const fanRadius=THREE.MathUtils.smoothstep(r,48,178)*(1-THREE.MathUtils.smoothstep(r,188,226));
+    const delta=inside*fan*fanRadius*(3.4+fbm5(ex*.018+11,ez*.018)*1.55);
     const river=Math.min(jezeroChannelDistance(x,z,true),jezeroChannelDistance(x,z,false));
-    const valley=-12*Math.exp(-Math.pow(river/20,2))*(1-0.28*inside);
-    const basin=-24*inside+15*rim+delta+valley;
+    const valley=-15*Math.exp(-Math.pow(river/17,2))*(1-0.22*inside);
+    const basin=-27*inside+17*rim+delta+valley;
     const safe=THREE.MathUtils.smoothstep(Math.hypot(x,z),38,88);
-    return base*.38+safe*(basin+eroded);
+    return base*.32+safe*(basin+eroded);
   }
   function getTerrainHeight(x,z){
     const base=baseTerrainHeight(x,z);
@@ -1721,15 +1732,29 @@
 
   function jezeroWaterGeometry(){
     const group=new THREE.Group();group.name='Jezero ancient water (illustrative)';
+    // A small repeating normal map supplies moving micro-ripples without
+    // adding geometry or another render pass (important on integrated GPUs).
+    const rippleSize=64, rippleData=new Uint8Array(rippleSize*rippleSize*4);
+    for(let y=0;y<rippleSize;y++)for(let x=0;x<rippleSize;x++){
+      const i=(y*rippleSize+x)*4;
+      const a=Math.sin(x/rippleSize*Math.PI*8)*.16;
+      const b=Math.cos(y/rippleSize*Math.PI*6)*.13;
+      const nx=Math.round(128+a*127), ny=Math.round(128+b*127);
+      rippleData[i]=nx;rippleData[i+1]=ny;rippleData[i+2]=250;rippleData[i+3]=255;
+    }
+    const rippleNormal=new THREE.DataTexture(rippleData,rippleSize,rippleSize,THREE.RGBAFormat);
+    rippleNormal.wrapS=rippleNormal.wrapT=THREE.RepeatWrapping;
+    rippleNormal.repeat.set(3.5,3.5);rippleNormal.needsUpdate=true;
     const material=new THREE.MeshStandardMaterial({
       color:0x162b38,roughness:.12,metalness:.85,transparent:true,opacity:.92,
+      normalMap:rippleNormal,normalScale:new THREE.Vector2(.22,.22),
       side:THREE.DoubleSide,depthWrite:false
     });
     const disk=new THREE.Mesh(new THREE.CircleGeometry(173,128),material);
     disk.rotation.x=-Math.PI/2;disk.position.set(JEZERO_CENTER.x,0,JEZERO_CENTER.z);
     group.add(disk);
     const ribbon=(inlet)=>{
-      const verts=[],indices=[],count=96;
+      const verts=[],uvs=[],indices=[],count=96;
       for(let i=0;i<=count;i++){
         const t=i/count;
         const points=JEZERO_CHANNELS[inlet?0:1];
@@ -1742,10 +1767,12 @@
         const len=Math.hypot(x2-x,z2-z)||1,width=6+3*fbm5(t*3.1+5,8.1);
         const nx=-(z2-z)/len,nz=(x2-x)/len;
         verts.push(x+nx*width,0,z+nz*width,x-nx*width,0,z-nz*width);
+        uvs.push(t*5,0,t*5,1);
         if(i<count){const j=i*2;indices.push(j,j+1,j+2,j+1,j+3,j+2);}
       }
       const geo=new THREE.BufferGeometry();
       geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));
+      geo.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));
       geo.setIndex(indices);geo.computeVertexNormals();
       return new THREE.Mesh(geo,material);
     };
@@ -1784,7 +1811,11 @@
     jezeroWater.position.y=jezeroWaterHeight+.045*Math.sin(t*1.3);
     // Ripples via subtle normal variation and a gentle sunlight shimmer.
     const mat=jezeroWater.children[0].material;
-    mat.roughness=.12+.018*Math.sin(t*.85);
+    mat.roughness=.12+.012*Math.sin(t*.85);
+    if(mat.normalMap){
+      mat.normalMap.offset.x=(t*.012)%1;
+      mat.normalMap.offset.y=(t*.007)%1;
+    }
     if(!jezeroAncient&&jezeroWaterHeight<-66)jezeroWater.visible=false;
   }
   function prepareSurfaceSite(){
