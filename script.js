@@ -1998,24 +1998,23 @@
     const desiredRobotX = robotAside ? 1.45 : -1.28;
     rig.position.x = THREE.MathUtils.damp(rig.position.x, desiredRobotX, 4.8, dt);
     rig.position.y = THREE.MathUtils.damp(rig.position.y, -.86, 4.8, dt);
-    // Keep the speech bubble directly above the robot, tracking its projected screen position.
-    // This changes only the tooltip placement; the robot, camera and scene remain untouched.
+    // Anchor the speech bubble to the top edge of the robot's head, not to an
+    // arbitrary point above the rig. Keep a small 12px visual gap and center the tail.
+    // Only the bubble position changes; the robot, camera, scene and bubble styling stay intact.
     const bubbleWidth = bubble.offsetWidth || Math.min(270, W-24);
-    const bubbleAnchor = new THREE.Vector3();
-    rig.getWorldPosition(bubbleAnchor);
-    bubbleAnchor.y += 1.65;
+    const bubbleAnchor = head.localToWorld(new THREE.Vector3(0, 0.72, 0));
     bubbleAnchor.project(cam);
     const robotScreenX = (bubbleAnchor.x * 0.5 + 0.5) * W;
     const robotScreenY = (-bubbleAnchor.y * 0.5 + 0.5) * H;
     const desiredBubbleX = THREE.MathUtils.clamp(robotScreenX - bubbleWidth * 0.5, 12, Math.max(12, W - bubbleWidth - 12));
-    const desiredBubbleBottom = THREE.MathUtils.clamp(H - robotScreenY + 14, 12, H - 90);
+    const desiredBubbleBottom = THREE.MathUtils.clamp(H - robotScreenY + 12, 12, H - 90);
     if (!Number.isFinite(window.__robotBubbleX)) window.__robotBubbleX = desiredBubbleX;
     if (!Number.isFinite(window.__robotBubbleBottom)) window.__robotBubbleBottom = desiredBubbleBottom;
     window.__robotBubbleX = THREE.MathUtils.damp(window.__robotBubbleX, desiredBubbleX, 7, dt);
     window.__robotBubbleBottom = THREE.MathUtils.damp(window.__robotBubbleBottom, desiredBubbleBottom, 7, dt);
     bubble.style.left = Math.round(window.__robotBubbleX) + 'px';
     bubble.style.bottom = Math.round(window.__robotBubbleBottom) + 'px';
-    bubble.style.setProperty('--tx', THREE.MathUtils.clamp(robotScreenX - window.__robotBubbleX, 18, bubbleWidth - 18) + 'px');
+    bubble.style.setProperty('--tx', (bubbleWidth * 0.5) + 'px');
     if (shownMode !== mode) { shownMode = mode; acts.hidden = false; surfBtn.hidden = mode !== 'space'; backBtn.hidden = mode === 'space'; backBtn.textContent = mode === 'site' ? '↩ Back to map' : '↩ Return to space'; }
     missionHud.hidden = (mode === 'surface');if(mode==='surface'){
       mini.style.display='none'; acts.hidden=false;backBtn.hidden=false;backBtn.textContent='↩ Return to space';acts.style.zIndex='110';
