@@ -803,8 +803,19 @@
       if(depth<=0){m.el.classList.remove('visible');continue;}
       const p=world.project(camera);
       if(p.z>1||p.z< -1||Math.abs(p.x)>1.02||Math.abs(p.y)>1.02){m.el.classList.remove('visible');continue;}
-      m.el.style.left=((p.x+1)*.5*innerWidth-11).toFixed(1)+'px';
-      m.el.style.top=((1-p.y)*.5*innerHeight).toFixed(1)+'px';
+      const anchorX=((p.x+1)*.5*innerWidth-11), anchorY=((1-p.y)*.5*innerHeight);
+      m.el.style.left=anchorX.toFixed(1)+'px';
+      m.el.style.top=anchorY.toFixed(1)+'px';
+      // Jezero landing and Ingenuity operations area are geographically very close.
+      // Separate their on-screen callouts while preserving their real coordinates on Mars.
+      let dx=0,dy=0;
+      if(m.siteId==='perseverance'){dx=innerWidth<700?-66:-118;dy=innerWidth<700?-30:-38;}
+      else if(m.siteId==='ingenuity'){dx=innerWidth<700?62:112;dy=innerWidth<700?34:42;}
+      m.el.style.setProperty('--label-dx',dx+'px');
+      m.el.style.setProperty('--label-dy',dy+'px');
+      m.el.style.setProperty('--leader-length',Math.hypot(dx,dy)+'px');
+      m.el.style.setProperty('--leader-angle',Math.atan2(dy,dx)+'rad');
+      m.el.classList.toggle('separated',dx!==0||dy!==0);
       m.el.classList.add('visible');
     }
   }
