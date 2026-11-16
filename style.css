@@ -123,3 +123,7 @@
 
 /* The main navbar is the only navigation. Legacy mission route strip is hidden; routes remain in the main Exploration Routes section. */
 #missionHud{display:none!important}
+
+/* Robot assistant: small draggable hit area; 3D model is drawn by the main renderer. */
+#robot-hud { touch-action:none; -webkit-user-select:none; user-select:none; }
+#robot-hud:active { cursor:grabbing; }
